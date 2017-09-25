@@ -1,9 +1,9 @@
 package io.github.xinyangpan;
 
 import io.github.xinyangpan.ella.core.OrderBook;
-import io.github.xinyangpan.ella.core.order.Order;
-import io.github.xinyangpan.ella.core.order.OrderType;
-import io.github.xinyangpan.ella.core.order.Side;
+import io.github.xinyangpan.ella.core.bo.Order;
+import io.github.xinyangpan.ella.core.bo.OrderType;
+import io.github.xinyangpan.ella.core.bo.Side;
 
 public class Ella {
 

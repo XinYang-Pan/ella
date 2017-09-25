@@ -1,4 +1,4 @@
-package io.github.xinyangpan.ella.core.order;
+package io.github.xinyangpan.ella.core.bo;
 
 import java.util.ArrayList;
 import java.util.List;

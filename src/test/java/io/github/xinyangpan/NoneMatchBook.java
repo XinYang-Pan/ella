@@ -3,7 +3,7 @@ package io.github.xinyangpan;
 import static io.github.xinyangpan.OrderUtils.newOrder;
 
 import io.github.xinyangpan.ella.core.OrderBook;
-import io.github.xinyangpan.ella.core.order.Side;
+import io.github.xinyangpan.ella.core.bo.Side;
 
 public class NoneMatchBook {
 	//        1000  120.61

@@ -5,7 +5,7 @@ import static io.github.xinyangpan.OrderUtils.newOrder;
 import org.junit.Test;
 
 import io.github.xinyangpan.ella.core.OrderBook;
-import io.github.xinyangpan.ella.core.order.Side;
+import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookTest {
 

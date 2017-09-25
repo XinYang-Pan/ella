@@ -1,4 +1,4 @@
-package io.github.xinyangpan.ella.core.order;
+package io.github.xinyangpan.ella.core.bo;
 
 public enum Side {
 	BUY, SELL;

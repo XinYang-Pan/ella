@@ -1,4 +1,4 @@
-package io.github.xinyangpan.ella.core.order;
+package io.github.xinyangpan.ella.core.bo;
 
 public class Execution {
 	private double price;

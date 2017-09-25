@@ -7,10 +7,10 @@ import org.springframework.util.Assert;
 
 import com.google.common.base.Strings;
 
-import io.github.xinyangpan.ella.core.order.Execution;
-import io.github.xinyangpan.ella.core.order.Order;
-import io.github.xinyangpan.ella.core.order.OrderType;
-import io.github.xinyangpan.ella.core.order.Side;
+import io.github.xinyangpan.ella.core.bo.Execution;
+import io.github.xinyangpan.ella.core.bo.Order;
+import io.github.xinyangpan.ella.core.bo.OrderType;
+import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookEntry {
 	private double price;
