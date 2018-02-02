@@ -43,7 +43,7 @@ public class OrderBookImpl implements OrderBook {
 					oppositeSideMap.remove(firstEntry.getKey());
 				}
 				// 
-				BigDecimal quantity = order.getQuantity();
+				BigDecimal quantity = order.getFillableQuantity(orderBookEntry.getPrice());
 				Assert.isTrue(quantity.signum() >= 0 , "Internal Error: quantity");
 				if (quantity.signum() == 0) {
 					// Order is full filled.

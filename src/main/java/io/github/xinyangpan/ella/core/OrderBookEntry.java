@@ -19,7 +19,7 @@ public class OrderBookEntry {
 	private Deque<Order> orders = new LinkedList<>();
 
 	public void place(Order order) {
-		Assert.isTrue(order.getOrderType() != OrderType.MARKET, "Can not place market order into Order Book.");
+		Assert.isTrue(order.getOrderType() == OrderType.LIMIT, "Can place limit order only into Order Book.");
 		orders.add(order);
 		totalQuantity = totalQuantity.add(order.getQuantity());
 	}

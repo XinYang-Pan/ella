@@ -38,6 +38,9 @@ public class Order {
 			return quantity;
 		}
 		BigDecimal maxQuantity = this.maxAmount.divide(price, Const.QUANTITY_SCALE, RoundingMode.FLOOR);
+		if (quantity == null) {
+			return maxQuantity;
+		}
 		return maxQuantity.min(quantity);
 	}
 	
