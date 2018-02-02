@@ -15,7 +15,7 @@ import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookEntry {
 	private BigDecimal price;
-	private BigDecimal totalQuantity;
+	private BigDecimal totalQuantity = BigDecimal.ZERO;
 	private Deque<Order> orders = new LinkedList<>();
 
 	public void place(Order order) {
