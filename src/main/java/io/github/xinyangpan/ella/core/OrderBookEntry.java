@@ -27,7 +27,8 @@ public class OrderBookEntry {
 	public void take(Order input) {
 		Order order = null;
 		while ((order = orders.pollFirst()) != null) {
-			BigDecimal fillingQty = order.getQuantity().min(input.getQuantity());
+			BigDecimal inputQuantity = input.getFillableQuantity(price);
+			BigDecimal fillingQty = order.getQuantity().min(inputQuantity);
 			if (fillingQty.signum() > 0) {
 				totalQuantity = totalQuantity.subtract(fillingQty);
 				Execution execution = new Execution(price, fillingQty);
@@ -36,7 +37,7 @@ public class OrderBookEntry {
 				if (order.getQuantity().signum() > 0) {
 					orders.addFirst(order);
 				}
-				if (input.getQuantity().signum() <= 0) {
+				if (input.getFillableQuantity(price).signum() <= 0) {
 					break;
 				}
 			}

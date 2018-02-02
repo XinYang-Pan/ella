@@ -1,6 +1,7 @@
 package io.github.xinyangpan.ella.core.bo;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +22,23 @@ public class Order {
 	private List<Execution> executions = new ArrayList<>();
 	
 	public void fill(Execution execution) {
+		if (this.maxAmount != null) {
+			this.maxAmount = this.maxAmount.subtract(execution.getAmount());
+			Assert.isTrue(this.maxAmount.signum() >= 0, "Max Amount is exceeded.");
+		}
 		BigDecimal quantity = execution.getQuantity();
 		Assert.isTrue(quantity.compareTo(this.quantity) <= 0, "Target quantity is greater than remaining one.");
 		this.quantity = this.quantity.subtract(quantity);
 		this.filledQuantity = this.filledQuantity.add(quantity);
 		executions.add(execution);
+	}
+	
+	public BigDecimal getFillableQuantity(BigDecimal price) {
+		if (maxAmount == null) {
+			return quantity;
+		}
+		BigDecimal maxQuantity = this.maxAmount.divide(price, Const.QUANTITY_SCALE, RoundingMode.FLOOR);
+		return maxQuantity.min(quantity);
 	}
 	
 	@Override
