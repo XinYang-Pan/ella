@@ -7,12 +7,12 @@ import java.util.TreeMap;
 
 import org.springframework.util.Assert;
 
-import io.github.xinyangpan.ella.OrderBookService;
+import io.github.xinyangpan.ella.OrderBook;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Side;
 
-public class OrderBook implements OrderBookService {
+public class OrderBookImpl implements OrderBook {
 	private NavigableMap<Double, OrderBookEntry> bidMap = new TreeMap<>(Comparator.reverseOrder());
 	private NavigableMap<Double, OrderBookEntry> askMap = new TreeMap<>();
 

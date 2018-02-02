@@ -16,7 +16,7 @@ public class Order {
 	private long orderTs;
 	private List<Execution> executions = new ArrayList<>();
 	
-	public synchronized void fill(Execution execution) {
+	public void fill(Execution execution) {
 		long quantity = execution.getQuantity();
 		Assert.isTrue(quantity <= this.quantity, "Target quantity is greater than remaining one.");
 		this.quantity = this.quantity - quantity;

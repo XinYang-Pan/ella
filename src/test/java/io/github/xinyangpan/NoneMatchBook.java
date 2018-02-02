@@ -2,7 +2,7 @@ package io.github.xinyangpan;
 
 import static io.github.xinyangpan.OrderUtils.newOrder;
 
-import io.github.xinyangpan.ella.core.OrderBook;
+import io.github.xinyangpan.ella.core.OrderBookImpl;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public class NoneMatchBook {
@@ -12,8 +12,8 @@ public class NoneMatchBook {
 	// 120.57 1000        
 	// 120.56 1000        
 	// 120.55 1000        
-	public static OrderBook bookSample1() {
-		OrderBook orderBook = new OrderBook();
+	public static OrderBookImpl bookSample1() {
+		OrderBookImpl orderBook = new OrderBookImpl();
 		// ASK
 		orderBook.placeOrder(newOrder(Side.SELL, 1000, 120.59));
 		orderBook.placeOrder(newOrder(Side.SELL, 1000, 120.61));

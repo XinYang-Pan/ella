@@ -17,13 +17,13 @@ public class OrderBookEntry {
 	private long totalQuantity;
 	private Deque<Order> orders = new LinkedList<>();
 
-	public synchronized void place(Order order) {
+	public void place(Order order) {
 		Assert.isTrue(order.getOrderType() != OrderType.MARKET, "Can not place market order into Order Book.");
 		orders.add(order);
 		totalQuantity = totalQuantity + order.getQuantity();
 	}
 
-	public synchronized void take(Order input) {
+	public void take(Order input) {
 		Order order = null;
 		while ((order = orders.pollFirst()) != null) {
 			long fillingQty = Long.min(order.getQuantity(), input.getQuantity());

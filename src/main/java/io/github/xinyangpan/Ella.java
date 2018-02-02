@@ -1,6 +1,6 @@
 package io.github.xinyangpan;
 
-import io.github.xinyangpan.ella.core.OrderBook;
+import io.github.xinyangpan.ella.core.OrderBookImpl;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Side;
@@ -8,7 +8,7 @@ import io.github.xinyangpan.ella.core.bo.Side;
 public class Ella {
 
 	public static void main(String[] args) {
-		OrderBook orderBook = new OrderBook();
+		OrderBookImpl orderBook = new OrderBookImpl();
 		// BID
 		System.out.println(orderBook.placeOrder(newOrder(Side.BUY, 1000, 120.57)));
 		System.out.println(orderBook.toOrderBoardStr());
