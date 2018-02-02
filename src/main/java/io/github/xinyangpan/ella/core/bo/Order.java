@@ -1,5 +1,6 @@
 package io.github.xinyangpan.ella.core.bo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,8 @@ public class Order {
 	private long quantity;
 	private long filledQuantity;
 	private long totalQuantity;
-	private double price;
+	// worst price for Market Order
+	private BigDecimal price;
 	private Side side;
 	private OrderType orderType;
 	private long orderTs;
@@ -45,11 +47,11 @@ public class Order {
 		this.quantity = quantity;
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

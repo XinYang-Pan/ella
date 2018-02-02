@@ -1,5 +1,7 @@
 package io.github.xinyangpan;
 
+import java.math.BigDecimal;
+
 import io.github.xinyangpan.ella.core.OrderBookImpl;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
@@ -34,7 +36,7 @@ public class Ella {
 		order.setQuantity(quantity);
 		order.setFilledQuantity(0);
 		order.setTotalQuantity(quantity);
-		order.setPrice(price);
+		order.setPrice(new BigDecimal(String.valueOf(price)));
 		order.setSide(side);
 		order.setOrderTs(System.currentTimeMillis());
 		return order;

@@ -1,5 +1,6 @@
 package io.github.xinyangpan;
 
+import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicLong;
 
 import io.github.xinyangpan.ella.core.bo.Order;
@@ -16,7 +17,7 @@ public class OrderUtils {
 		order.setQuantity(quantity);
 		order.setFilledQuantity(0);
 		order.setTotalQuantity(quantity);
-		order.setPrice(price);
+		order.setPrice(new BigDecimal(String.valueOf(price)));
 		order.setSide(side);
 		order.setOrderTs(System.currentTimeMillis());
 		return order;

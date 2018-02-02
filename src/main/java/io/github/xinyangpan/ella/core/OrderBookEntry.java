@@ -1,5 +1,6 @@
 package io.github.xinyangpan.ella.core;
 
+import java.math.BigDecimal;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -13,7 +14,7 @@ import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookEntry {
-	private double price;
+	private BigDecimal price;
 	private long totalQuantity;
 	private Deque<Order> orders = new LinkedList<>();
 
@@ -61,11 +62,11 @@ public class OrderBookEntry {
 		}
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

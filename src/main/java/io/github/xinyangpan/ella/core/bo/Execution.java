@@ -1,13 +1,15 @@
 package io.github.xinyangpan.ella.core.bo;
 
+import java.math.BigDecimal;
+
 public class Execution {
-	private double price;
+	private BigDecimal price;
 	private long quantity;
 
 	public Execution() {
 	}
 
-	public Execution(double price, long quantity) {
+	public Execution(BigDecimal price, long quantity) {
 		super();
 		this.price = price;
 		this.quantity = quantity;
@@ -18,11 +20,11 @@ public class Execution {
 		return String.format("Execution [price=%s, quantity=%s]", price, quantity);
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

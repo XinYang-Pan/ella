@@ -1,5 +1,6 @@
 package io.github.xinyangpan.ella.core;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
@@ -13,8 +14,8 @@ import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookImpl implements OrderBook {
-	private NavigableMap<Double, OrderBookEntry> bidMap = new TreeMap<>(Comparator.reverseOrder());
-	private NavigableMap<Double, OrderBookEntry> askMap = new TreeMap<>();
+	private NavigableMap<BigDecimal, OrderBookEntry> bidMap = new TreeMap<>(Comparator.reverseOrder());
+	private NavigableMap<BigDecimal, OrderBookEntry> askMap = new TreeMap<>();
 
 	@Override
 	public Order placeOrder(Order order) {
@@ -28,9 +29,9 @@ public class OrderBookImpl implements OrderBook {
 	}
 
 	private Order marketAndLimitOrder(Order order) {
-		NavigableMap<Double, OrderBookEntry> oppositeSideMap = this.otherSideBook(order.getSide());
+		NavigableMap<BigDecimal, OrderBookEntry> oppositeSideMap = this.otherSideBook(order.getSide());
 		// 
-		Entry<Double, OrderBookEntry> firstEntry = null;
+		Entry<BigDecimal, OrderBookEntry> firstEntry = null;
 		while ((firstEntry = oppositeSideMap.firstEntry()) != null) {
 			if (this.isEntryPriceBetterOrSameThanOrderPrice(order, firstEntry)) {
 				OrderBookEntry orderBookEntry = firstEntry.getValue();
@@ -63,7 +64,7 @@ public class OrderBookImpl implements OrderBook {
 	}
 
 	private void doPlace(Order order) {
-		NavigableMap<Double, OrderBookEntry> sameSideMap = this.sameSideBook(order.getSide());
+		NavigableMap<BigDecimal, OrderBookEntry> sameSideMap = this.sameSideBook(order.getSide());
 		OrderBookEntry orderBookEntry = sameSideMap.get(order.getPrice());
 		if (orderBookEntry == null) {
 			orderBookEntry = new OrderBookEntry();
@@ -73,19 +74,16 @@ public class OrderBookImpl implements OrderBook {
 		orderBookEntry.place(order);
 	}
 
-	private boolean isEntryPriceBetterOrSameThanOrderPrice(Order order, Entry<Double, OrderBookEntry> firstEntry) {
-		switch (order.getOrderType()) {
-		case MARKET:
+	private boolean isEntryPriceBetterOrSameThanOrderPrice(Order order, Entry<BigDecimal, OrderBookEntry> firstEntry) {
+		BigDecimal price = order.getPrice();
+		if (price == null) {
 			return true;
-		case LIMIT:
-			Side side = order.getSide();
-			return side.isFirstPriceBetterOrSame(order.getPrice(), firstEntry.getKey());
-		default:
-			throw new IllegalArgumentException(String.format("Order Type not supported.", order.getOrderType()));
 		}
+		Side side = order.getSide();
+		return side.isFirstPriceBetterOrSame(price, firstEntry.getKey());
 	}
 
-	private NavigableMap<Double, OrderBookEntry> otherSideBook(Side side) {
+	private NavigableMap<BigDecimal, OrderBookEntry> otherSideBook(Side side) {
 		switch (side) {
 		case SELL:
 			return this.bidMap;
@@ -96,7 +94,7 @@ public class OrderBookImpl implements OrderBook {
 		}
 	}
 
-	private NavigableMap<Double, OrderBookEntry> sameSideBook(Side side) {
+	private NavigableMap<BigDecimal, OrderBookEntry> sameSideBook(Side side) {
 		switch (side) {
 		case SELL:
 			return this.askMap;
@@ -121,10 +119,10 @@ public class OrderBookImpl implements OrderBook {
 		int priceLength = 7;
 		int qtyLength = 8;
 		StringBuilder sb = new StringBuilder();
-		for (Entry<Double, OrderBookEntry> e : askMap.entrySet()) {
+		for (Entry<BigDecimal, OrderBookEntry> e : askMap.entrySet()) {
 			sb.insert(0, System.lineSeparator()).insert(0, e.getValue().toOrderBoardStr(priceLength, qtyLength, Side.SELL));
 		}
-		for (Entry<Double, OrderBookEntry> e : bidMap.entrySet()) {
+		for (Entry<BigDecimal, OrderBookEntry> e : bidMap.entrySet()) {
 			sb.append(e.getValue().toOrderBoardStr(priceLength, qtyLength, Side.BUY)).append(System.lineSeparator());
 		}
 		sb.insert(0, System.lineSeparator()).insert(0, "****** Order Board ******");
