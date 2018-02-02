@@ -15,28 +15,28 @@ import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookEntry {
 	private BigDecimal price;
-	private long totalQuantity;
+	private BigDecimal totalQuantity;
 	private Deque<Order> orders = new LinkedList<>();
 
 	public void place(Order order) {
 		Assert.isTrue(order.getOrderType() != OrderType.MARKET, "Can not place market order into Order Book.");
 		orders.add(order);
-		totalQuantity = totalQuantity + order.getQuantity();
+		totalQuantity = totalQuantity.add(order.getQuantity());
 	}
 
 	public void take(Order input) {
 		Order order = null;
 		while ((order = orders.pollFirst()) != null) {
-			long fillingQty = Long.min(order.getQuantity(), input.getQuantity());
-			if (fillingQty > 0) {
-				totalQuantity = totalQuantity - fillingQty;
+			BigDecimal fillingQty = order.getQuantity().min(input.getQuantity());
+			if (fillingQty.signum() > 0) {
+				totalQuantity = totalQuantity.subtract(fillingQty);
 				Execution execution = new Execution(price, fillingQty);
 				input.fill(execution);
 				order.fill(execution);
-				if (order.getQuantity() > 0) {
+				if (order.getQuantity().signum() > 0) {
 					orders.addFirst(order);
 				}
-				if (input.getQuantity() <= 0) {
+				if (input.getQuantity().signum() <= 0) {
 					break;
 				}
 			}
@@ -70,11 +70,11 @@ public class OrderBookEntry {
 		this.price = price;
 	}
 
-	public long getTotalQuantity() {
+	public BigDecimal getTotalQuantity() {
 		return totalQuantity;
 	}
 
-	public void setTotalQuantity(long totalQuantity) {
+	public void setTotalQuantity(BigDecimal totalQuantity) {
 		this.totalQuantity = totalQuantity;
 	}
 

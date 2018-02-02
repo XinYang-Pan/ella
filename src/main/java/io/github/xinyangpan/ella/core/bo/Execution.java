@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 
 public class Execution {
 	private BigDecimal price;
-	private long quantity;
+	private BigDecimal quantity;
 
 	public Execution() {
 	}
 
-	public Execution(BigDecimal price, long quantity) {
+	public Execution(BigDecimal price, BigDecimal quantity) {
 		super();
 		this.price = price;
 		this.quantity = quantity;
@@ -28,11 +28,11 @@ public class Execution {
 		this.price = price;
 	}
 
-	public long getQuantity() {
+	public BigDecimal getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(long quantity) {
+	public void setQuantity(BigDecimal quantity) {
 		this.quantity = quantity;
 	}
 

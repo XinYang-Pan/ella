@@ -33,9 +33,9 @@ public class Ella {
 		Order order = new Order();
 		order.setId(1);
 		order.setOrderType(OrderType.LIMIT);
-		order.setQuantity(quantity);
-		order.setFilledQuantity(0);
-		order.setTotalQuantity(quantity);
+		order.setQuantity(new BigDecimal(String.valueOf(quantity)));
+		order.setFilledQuantity(BigDecimal.ZERO);
+		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setPrice(new BigDecimal(String.valueOf(price)));
 		order.setSide(side);
 		order.setOrderTs(System.currentTimeMillis());
@@ -46,9 +46,9 @@ public class Ella {
 		Order order = new Order();
 		order.setId(1);
 		order.setOrderType(OrderType.MARKET);
-		order.setQuantity(quantity);
-		order.setFilledQuantity(0);
-		order.setTotalQuantity(quantity);
+		order.setQuantity(new BigDecimal(String.valueOf(quantity)));
+		order.setFilledQuantity(BigDecimal.ZERO);
+		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setSide(side);
 		order.setOrderTs(System.currentTimeMillis());
 		return order;

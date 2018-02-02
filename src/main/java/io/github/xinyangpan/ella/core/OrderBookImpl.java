@@ -37,15 +37,15 @@ public class OrderBookImpl implements OrderBook {
 				OrderBookEntry orderBookEntry = firstEntry.getValue();
 				orderBookEntry.take(order);
 				// 
-				long totalQuantity = orderBookEntry.getTotalQuantity();
-				Assert.isTrue(totalQuantity >= 0 , "Internal Error: totalQuantity");
-				if (totalQuantity == 0) {
+				BigDecimal totalQuantity = orderBookEntry.getTotalQuantity();
+				Assert.isTrue(totalQuantity.signum() >= 0 , "Internal Error: totalQuantity");
+				if (totalQuantity.signum() == 0) {
 					oppositeSideMap.remove(firstEntry.getKey());
 				}
 				// 
-				long quantity = order.getQuantity();
-				Assert.isTrue(quantity >= 0 , "Internal Error: quantity");
-				if (quantity == 0) {
+				BigDecimal quantity = order.getQuantity();
+				Assert.isTrue(quantity.signum() >= 0 , "Internal Error: quantity");
+				if (quantity.signum() == 0) {
 					// Order is full filled.
 					return order;
 				}
