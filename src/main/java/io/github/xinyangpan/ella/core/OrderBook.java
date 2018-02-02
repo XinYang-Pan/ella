@@ -22,8 +22,6 @@ public class OrderBook implements OrderBookService {
 		case MARKET:
 		case LIMIT:
 			return this.marketAndLimitOrder(order);
-		case STOP:
-//			return null;
 		default:
 			throw new IllegalArgumentException(String.format("Order Type not supported.", order.getOrderType()));
 		}
