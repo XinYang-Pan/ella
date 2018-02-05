@@ -15,6 +15,7 @@ import io.github.xinyangpan.ella.core.bo.Execution;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Side;
+import io.github.xinyangpan.ella.core.bo.Status;
 
 class OrderBookEntry {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderBookEntry.class);
@@ -34,6 +35,7 @@ class OrderBookEntry {
 		orders.add(order);
 		totalQuantity = totalQuantity.add(order.getQuantity());
 		allOrderIndex.put(order.getId(), order);
+		order.setStatus(Status.PLACED);
 	}
 
 	public void take(Order input) {
@@ -62,15 +64,19 @@ class OrderBookEntry {
 		LOGGER.info("Take Order Result: {}", input);
 	}
 	
-	public void cancelOrder(Order input) {
+	public Order cancelOrder(Order input) {
 		LOGGER.info("Cancel Order: {}", input);
 		Assert.notNull(input, "Order can not be null.");
 		Assert.isTrue(input.getOrderType() == OrderType.LIMIT, "Order must be limit.");
 		Order order = allOrderIndex.remove(input.getId());
-		if (orders.remove(order)) {
+		if (order != null && orders.remove(order)) {
 			totalQuantity.subtract(order.getQuantity());
+			order.setStatus(Status.CANCELLED);
+			return order;
 		} else {
-			LOGGER.warn("No order found for {}", input);
+			LOGGER.warn("Cancel order failed for {}. ref = {}", input, order);
+			input.setStatus(Status.FAILED);
+			return input;
 		}
 	}
 

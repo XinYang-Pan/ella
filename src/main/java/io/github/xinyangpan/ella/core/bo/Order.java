@@ -44,6 +44,21 @@ public class Order {
 		}
 		return maxQuantity.min(quantity);
 	}
+
+	public void complete() {
+		if (filledQuantity.compareTo(BigDecimal.ZERO) == 0) {
+			this.status = Status.FAILED;
+			return;
+		}
+		if (this.totalQuantity == null) {
+			// No total quantity, max amount executing
+			this.status = Status.FILLED;
+		} else if (totalQuantity != null && totalQuantity.compareTo(filledQuantity) == 0) {
+			this.status = Status.FILLED;
+		} else {
+			this.status = Status.PARTIAL_FILLED;
+		}
+	}
 	
 	@Override
 	public String toString() {

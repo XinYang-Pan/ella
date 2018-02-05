@@ -48,10 +48,11 @@ public class OrderBookImpl implements OrderBook {
 					oppositeSideMap.remove(firstEntry.getKey());
 				}
 				// 
-				BigDecimal quantity = order.getFillableQuantity(orderBookEntry.getPrice());
-				Assert.isTrue(quantity.signum() >= 0 , "Internal Error: quantity");
-				if (quantity.signum() == 0) {
+				BigDecimal fillableQuantity = order.getFillableQuantity(orderBookEntry.getPrice());
+				Assert.isTrue(fillableQuantity.signum() >= 0 , "Internal Error: quantity");
+				if (fillableQuantity.signum() == 0) {
 					// Order is full filled.
+					order.complete();
 					return order;
 				}
 			} else {
@@ -111,8 +112,11 @@ public class OrderBookImpl implements OrderBook {
 	}
 
 	@Override
-	public Order cancelOrder(long orderId) {
-		return null;
+	public Order cancelOrder(Order order) {
+		NavigableMap<BigDecimal, OrderBookEntry> sameSideBook = this.sameSideBook(order.getSide());
+		OrderBookEntry orderBookEntry = sameSideBook.get(order.getPrice());
+		orderBookEntry.cancelOrder(order);
+		return order;
 	}
 
 	@Override
