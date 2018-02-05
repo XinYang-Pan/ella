@@ -18,6 +18,7 @@ public class Order {
 	private Status status;
 	private OrderType orderType;
 	private long orderTs;
+	private int version = 1;
 	// for Market Order
 	private BigDecimal maxAmount;
 	private List<Execution> executions = new ArrayList<>();
@@ -58,6 +59,10 @@ public class Order {
 		} else {
 			this.status = Status.PARTIAL_FILLED;
 		}
+	}
+
+	public void versionPlus() {
+		this.version ++;
 	}
 	
 	@Override
@@ -151,6 +156,14 @@ public class Order {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 }

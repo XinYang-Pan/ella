@@ -1,6 +1,6 @@
 package io.github.xinyangpan;
 
-import static io.github.xinyangpan.OrderUtils.newOrder;
+import static io.github.xinyangpan.OrderUtils.limit;
 
 import io.github.xinyangpan.ella.core.OrderBookImpl;
 import io.github.xinyangpan.ella.core.bo.Side;
@@ -14,14 +14,15 @@ public class NoneMatchBook {
 	// 120.55 1000        
 	public static OrderBookImpl bookSample1() {
 		OrderBookImpl orderBook = new OrderBookImpl();
+		orderBook.setExecutionListener(System.out::println);
 		// ASK
-		orderBook.placeOrder(newOrder(Side.SELL, 1000, 120.59));
-		orderBook.placeOrder(newOrder(Side.SELL, 1000, 120.61));
-		orderBook.placeOrder(newOrder(Side.SELL, 1000, 120.58));
+		orderBook.placeOrder(limit(Side.SELL, 1000, 120.59));
+		orderBook.placeOrder(limit(Side.SELL, 1000, 120.61));
+		orderBook.placeOrder(limit(Side.SELL, 1000, 120.58));
 		// BID
-		orderBook.placeOrder(newOrder(Side.BUY, 1000, 120.57));
-		orderBook.placeOrder(newOrder(Side.BUY, 1000, 120.55));
-		orderBook.placeOrder(newOrder(Side.BUY, 1000, 120.56));
+		orderBook.placeOrder(limit(Side.BUY, 1000, 120.57));
+		orderBook.placeOrder(limit(Side.BUY, 1000, 120.55));
+		orderBook.placeOrder(limit(Side.BUY, 1000, 120.56));
 		return orderBook;
 	}
 

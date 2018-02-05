@@ -7,6 +7,8 @@ public class Execution {
 	private BigDecimal price;
 	private BigDecimal quantity;
 	private BigDecimal amount;
+	private long makerId;
+	private long takerId;
 
 	public Execution() {
 	}
@@ -18,9 +20,15 @@ public class Execution {
 		this.amount = this.price.multiply(this.quantity).setScale(Const.AMOUNT_SCALE, RoundingMode.DOWN);
 	}
 
+	public Execution(BigDecimal price, BigDecimal quantity, long makerId, long takerId) {
+		this(price, quantity);
+		this.makerId = makerId;
+		this.takerId = takerId;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("Execution [price=%s, quantity=%s]", price, quantity);
+		return String.format("Execution [price=%s, quantity=%s, amount=%s, makerId=%s, takerId=%s]", price, quantity, amount, makerId, takerId);
 	}
 
 	public BigDecimal getPrice() {
@@ -45,6 +53,22 @@ public class Execution {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	public long getMakerId() {
+		return makerId;
+	}
+
+	public void setMakerId(long makerId) {
+		this.makerId = makerId;
+	}
+
+	public long getTakerId() {
+		return takerId;
+	}
+
+	public void setTakerId(long takerId) {
+		this.takerId = takerId;
 	}
 
 }

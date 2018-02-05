@@ -1,6 +1,7 @@
 package io.github.xinyangpan;
 
-import static io.github.xinyangpan.OrderUtils.newOrder;
+import static io.github.xinyangpan.OrderUtils.market;
+import static io.github.xinyangpan.OrderUtils.limit;
 
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class OrderBookTest {
 	public void limitSell500() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-		System.out.println(orderBook.placeOrder(newOrder(Side.SELL, 500, 120.01)));
+		System.out.println(orderBook.placeOrder(limit(Side.SELL, 500, 120.01)));
 		System.out.println(orderBook.toOrderBoardStr());
 	}
 
@@ -21,7 +22,7 @@ public class OrderBookTest {
 	public void limitSell5000() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-		System.out.println(orderBook.placeOrder(newOrder(Side.SELL, 5000, 120.01)));
+		System.out.println(orderBook.placeOrder(limit(Side.SELL, 5000, 120.01)));
 		System.out.println(orderBook.toOrderBoardStr());
 	}
 
@@ -29,7 +30,7 @@ public class OrderBookTest {
 	public void marketSell500() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-		System.out.println(orderBook.placeOrder(newOrder(Side.SELL, 500)));
+		System.out.println(orderBook.placeOrder(market(Side.SELL, 500)));
 		System.out.println(orderBook.toOrderBoardStr());
 	}
 
@@ -37,7 +38,7 @@ public class OrderBookTest {
 	public void marketSell5000() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-		System.out.println(orderBook.placeOrder(newOrder(Side.SELL, 5000)));
+		System.out.println(orderBook.placeOrder(market(Side.SELL, 5000)));
 		System.out.println(orderBook.toOrderBoardStr());
 	}
 
@@ -45,7 +46,7 @@ public class OrderBookTest {
 	public void limitBuy500() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-		System.out.println(orderBook.placeOrder(newOrder(Side.BUY, 500, 130.01)));
+		System.out.println(orderBook.placeOrder(limit(Side.BUY, 500, 130.01)));
 		System.out.println(orderBook.toOrderBoardStr());
 	}
 
@@ -53,7 +54,7 @@ public class OrderBookTest {
 	public void limitBuy5000() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-		System.out.println(orderBook.placeOrder(newOrder(Side.BUY, 5000, 130.01)));
+		System.out.println(orderBook.placeOrder(limit(Side.BUY, 5000, 130.01)));
 		System.out.println(orderBook.toOrderBoardStr());
 	}
 
@@ -61,7 +62,7 @@ public class OrderBookTest {
 	public void marketBuy500() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-		System.out.println(orderBook.placeOrder(newOrder(Side.BUY, 500)));
+		System.out.println(orderBook.placeOrder(market(Side.BUY, 500)));
 		System.out.println(orderBook.toOrderBoardStr());
 	}
 
@@ -69,7 +70,7 @@ public class OrderBookTest {
 	public void marketBuy5000() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-		System.out.println(orderBook.placeOrder(newOrder(Side.BUY, 5000)));
+		System.out.println(orderBook.placeOrder(market(Side.BUY, 5000)));
 		System.out.println(orderBook.toOrderBoardStr());
 	}
 

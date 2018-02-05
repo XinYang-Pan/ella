@@ -18,12 +18,17 @@ import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookImpl implements OrderBook {
 	private Map<Long, Order> allOrderIndex = Maps.newHashMap();
+	private ExecutionListener executionListener;
 	
 	private NavigableMap<BigDecimal, OrderBookEntry> bidMap = new TreeMap<>(Comparator.reverseOrder());
 	private NavigableMap<BigDecimal, OrderBookEntry> askMap = new TreeMap<>();
+	
+	private OrderValidate orderValidate = new OrderValidate(allOrderIndex);
 
 	@Override
 	public Order placeOrder(Order order) {
+		orderValidate.place(order);
+		order.versionPlus();
 		switch (order.getOrderType()) {
 		case MARKET:
 		case LIMIT:
@@ -73,7 +78,7 @@ public class OrderBookImpl implements OrderBook {
 		NavigableMap<BigDecimal, OrderBookEntry> sameSideMap = this.sameSideBook(order.getSide());
 		OrderBookEntry orderBookEntry = sameSideMap.get(order.getPrice());
 		if (orderBookEntry == null) {
-			orderBookEntry = new OrderBookEntry(allOrderIndex);
+			orderBookEntry = new OrderBookEntry(allOrderIndex, executionListener);
 			orderBookEntry.setPrice(order.getPrice());
 			sameSideMap.put(order.getPrice(), orderBookEntry);
 		}
@@ -112,7 +117,9 @@ public class OrderBookImpl implements OrderBook {
 	}
 
 	@Override
-	public Order cancelOrder(Order order) {
+	public Order cancel(Order order) {
+		orderValidate.cancel(order);
+		order.versionPlus();
 		NavigableMap<BigDecimal, OrderBookEntry> sameSideBook = this.sameSideBook(order.getSide());
 		OrderBookEntry orderBookEntry = sameSideBook.get(order.getPrice());
 		orderBookEntry.cancelOrder(order);
@@ -137,6 +144,14 @@ public class OrderBookImpl implements OrderBook {
 		sb.insert(0, System.lineSeparator()).insert(0, "****** Order Board ******");
 		sb.append("*************************");
 		return sb.toString();
+	}
+
+	public ExecutionListener getExecutionListener() {
+		return executionListener;
+	}
+
+	public void setExecutionListener(ExecutionListener executionListener) {
+		this.executionListener = executionListener;
 	}
 	
 }

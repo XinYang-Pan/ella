@@ -10,7 +10,7 @@ import io.github.xinyangpan.ella.core.bo.Side;
 public class OrderUtils {
 	private static AtomicLong id = new AtomicLong(1);
 
-	public static Order newOrder(Side side, long quantity, double price) {
+	public static Order limit(Side side, long quantity, double price) {
 		Order order = new Order();
 		order.setId(id.getAndIncrement());
 		order.setOrderType(OrderType.LIMIT);
@@ -22,7 +22,7 @@ public class OrderUtils {
 		return order;
 	}
 
-	public static Order newOrder(Side side, long quantity) {
+	public static Order market(Side side, long quantity) {
 		Order order = new Order();
 		order.setId(id.getAndIncrement());
 		order.setOrderType(OrderType.MARKET);

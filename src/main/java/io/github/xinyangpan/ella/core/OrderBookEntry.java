@@ -21,12 +21,14 @@ class OrderBookEntry {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderBookEntry.class);
 	
 	private final Map<Long, Order> allOrderIndex;
+	private final ExecutionListener executionListener;
 	private BigDecimal price;
 	private BigDecimal totalQuantity = BigDecimal.ZERO;
 	private Deque<Order> orders = new LinkedList<>();
 
-	OrderBookEntry(Map<Long, Order> allOrderIndex) {
+	OrderBookEntry(Map<Long, Order> allOrderIndex, ExecutionListener executionListener) {
 		this.allOrderIndex = allOrderIndex;
+		this.executionListener = executionListener;
 	}
 
 	public void make(Order order) {
@@ -46,9 +48,11 @@ class OrderBookEntry {
 			BigDecimal fillingQty = order.getQuantity().min(inputQuantity);
 			if (fillingQty.signum() > 0) {
 				totalQuantity = totalQuantity.subtract(fillingQty);
-				Execution execution = new Execution(price, fillingQty);
+				Execution execution = new Execution(price, fillingQty, order.getId(), input.getId());
 				input.fill(execution);
 				order.fill(execution);
+				order.versionPlus();
+				executionListener.onExecution(execution);
 				if (order.getQuantity().signum() > 0) {
 					// still have quantity
 					orders.addFirst(order);

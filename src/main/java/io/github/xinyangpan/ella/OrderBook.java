@@ -6,6 +6,6 @@ public interface OrderBook {
 
 	Order placeOrder(Order order);
 
-	Order cancelOrder(Order order);
+	Order cancel(Order order);
 
 }
