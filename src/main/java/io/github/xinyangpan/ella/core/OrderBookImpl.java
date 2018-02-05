@@ -2,6 +2,7 @@ package io.github.xinyangpan.ella.core;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
@@ -9,6 +10,7 @@ import java.util.TreeMap;
 
 import org.springframework.util.Assert;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.github.xinyangpan.ella.OrderBook;
@@ -18,7 +20,7 @@ import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookImpl implements OrderBook {
 	private Map<Long, Order> allOrderIndex = Maps.newHashMap();
-	private ExecutionListener executionListener;
+	private OrderBookListener orderBookListener;
 	
 	private NavigableMap<BigDecimal, OrderBookEntry> bidMap = new TreeMap<>(Comparator.reverseOrder());
 	private NavigableMap<BigDecimal, OrderBookEntry> askMap = new TreeMap<>();
@@ -78,7 +80,7 @@ public class OrderBookImpl implements OrderBook {
 		NavigableMap<BigDecimal, OrderBookEntry> sameSideMap = this.sameSideBook(order.getSide());
 		OrderBookEntry orderBookEntry = sameSideMap.get(order.getPrice());
 		if (orderBookEntry == null) {
-			orderBookEntry = new OrderBookEntry(allOrderIndex, executionListener);
+			orderBookEntry = new OrderBookEntry(allOrderIndex, orderBookListener);
 			orderBookEntry.setPrice(order.getPrice());
 			sameSideMap.put(order.getPrice(), orderBookEntry);
 		}
@@ -125,7 +127,12 @@ public class OrderBookImpl implements OrderBook {
 		orderBookEntry.cancelOrder(order);
 		return order;
 	}
-
+	
+	@Override
+	public List<Order> snapshot() {
+		return Lists.newArrayList(allOrderIndex.values());
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("OrderBook [bidMap=%s, askMap=%s]", bidMap, askMap);
@@ -146,12 +153,12 @@ public class OrderBookImpl implements OrderBook {
 		return sb.toString();
 	}
 
-	public ExecutionListener getExecutionListener() {
-		return executionListener;
+	public OrderBookListener getOrderBookListener() {
+		return orderBookListener;
 	}
 
-	public void setExecutionListener(ExecutionListener executionListener) {
-		this.executionListener = executionListener;
+	public void setOrderBookListener(OrderBookListener orderBookListener) {
+		this.orderBookListener = orderBookListener;
 	}
 	
 }

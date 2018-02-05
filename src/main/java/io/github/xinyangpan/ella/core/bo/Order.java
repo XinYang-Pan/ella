@@ -67,7 +67,7 @@ public class Order {
 	
 	@Override
 	public String toString() {
-		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, orderType=%s, orderTs=%s, maxAmount=%s, executions=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, orderType, orderTs, maxAmount, executions);
+		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, orderType=%s, orderTs=%s, version=%s, maxAmount=%s, executions=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, orderType, orderTs, version, maxAmount, executions);
 	}
 
 	public long getId() {

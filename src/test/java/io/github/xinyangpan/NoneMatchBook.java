@@ -3,6 +3,9 @@ package io.github.xinyangpan;
 import static io.github.xinyangpan.OrderUtils.limit;
 
 import io.github.xinyangpan.ella.core.OrderBookImpl;
+import io.github.xinyangpan.ella.core.OrderBookListener;
+import io.github.xinyangpan.ella.core.bo.Execution;
+import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public class NoneMatchBook {
@@ -14,7 +17,17 @@ public class NoneMatchBook {
 	// 120.55 1000        
 	public static OrderBookImpl bookSample1() {
 		OrderBookImpl orderBook = new OrderBookImpl();
-		orderBook.setExecutionListener(System.out::println);
+		orderBook.setOrderBookListener(new OrderBookListener() {
+			@Override
+			public void onOrder(Order order) {
+				System.out.println(order);
+			}
+			
+			@Override
+			public void onExecution(Execution execution) {
+				System.out.println(execution);
+			}
+		});
 		// ASK
 		orderBook.placeOrder(limit(Side.SELL, 1000, 120.59));
 		orderBook.placeOrder(limit(Side.SELL, 1000, 120.61));

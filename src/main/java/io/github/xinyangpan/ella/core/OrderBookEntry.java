@@ -21,14 +21,14 @@ class OrderBookEntry {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderBookEntry.class);
 	
 	private final Map<Long, Order> allOrderIndex;
-	private final ExecutionListener executionListener;
+	private final OrderBookListener orderBookListener;
 	private BigDecimal price;
 	private BigDecimal totalQuantity = BigDecimal.ZERO;
 	private Deque<Order> orders = new LinkedList<>();
 
-	OrderBookEntry(Map<Long, Order> allOrderIndex, ExecutionListener executionListener) {
+	OrderBookEntry(Map<Long, Order> allOrderIndex, OrderBookListener orderBookListener) {
 		this.allOrderIndex = allOrderIndex;
-		this.executionListener = executionListener;
+		this.orderBookListener = orderBookListener;
 	}
 
 	public void make(Order order) {
@@ -52,14 +52,17 @@ class OrderBookEntry {
 				input.fill(execution);
 				order.fill(execution);
 				order.versionPlus();
-				executionListener.onExecution(execution);
 				if (order.getQuantity().signum() > 0) {
 					// still have quantity
 					orders.addFirst(order);
 				} else {
 					// no more quantity, remove from all order
 					allOrderIndex.remove(order.getId());
+					Assert.isTrue(order.getFilledQuantity().compareTo(order.getTotalQuantity()) == 0, "Maker Order should be full filled.");
+					order.setStatus(Status.FILLED);
 				}
+				orderBookListener.onExecution(execution);
+				orderBookListener.onOrder(order);
 				if (input.getFillableQuantity(price).signum() <= 0) {
 					break;
 				}

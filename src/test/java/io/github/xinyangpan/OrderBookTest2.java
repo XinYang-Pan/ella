@@ -25,6 +25,8 @@ public class OrderBookTest2 {
 		System.out.println(orderBook.toOrderBoardStr());
 		System.out.println(orderBook.placeOrder(limit(Side.BUY, 1000, 120.57)));
 		System.out.println(orderBook.toOrderBoardStr());
+
+		System.out.println(orderBook.snapshot());
 	}
 
 }
