@@ -22,6 +22,23 @@ public class Order {
 	// for Market Order
 	private BigDecimal maxAmount;
 	private List<Execution> executions = new ArrayList<>();
+
+	public Order copy() {
+		Order clone = new Order();
+		clone.id = this.id;
+		clone.quantity = this.quantity;
+		clone.filledQuantity = this.filledQuantity;
+		clone.totalQuantity = this.totalQuantity;
+		clone.price = this.price;
+		clone.side = this.side;
+		clone.status = this.status;
+		clone.orderType = this.orderType;
+		clone.orderTs = this.orderTs;
+		clone.version = this.version;
+		clone.maxAmount = this.maxAmount;
+		clone.executions.addAll(this.executions);
+		return clone;
+	}
 	
 	public void fill(Execution execution) {
 		if (this.maxAmount != null) {

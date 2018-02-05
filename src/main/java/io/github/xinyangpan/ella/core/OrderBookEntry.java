@@ -77,7 +77,6 @@ class OrderBookEntry {
 		Assert.isTrue(input.getOrderType() == OrderType.LIMIT, "Order must be limit.");
 		Order order = allOrderIndex.remove(input.getId());
 		if (order != null && orders.remove(order)) {
-			totalQuantity.subtract(order.getQuantity());
 			order.setStatus(Status.CANCELLED);
 			return order;
 		} else {

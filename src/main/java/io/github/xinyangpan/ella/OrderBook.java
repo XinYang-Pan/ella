@@ -10,6 +10,8 @@ public interface OrderBook {
 
 	Order cancel(Order order);
 
+	Order getCopy(long orderId);
+
 	List<Order> snapshot();
-	
+
 }

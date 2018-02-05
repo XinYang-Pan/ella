@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import io.github.xinyangpan.ella.OrderBook;
@@ -124,13 +124,17 @@ public class OrderBookImpl implements OrderBook {
 		order.versionPlus();
 		NavigableMap<BigDecimal, OrderBookEntry> sameSideBook = this.sameSideBook(order.getSide());
 		OrderBookEntry orderBookEntry = sameSideBook.get(order.getPrice());
-		orderBookEntry.cancelOrder(order);
-		return order;
+		return orderBookEntry.cancelOrder(order);
 	}
 	
 	@Override
 	public List<Order> snapshot() {
-		return Lists.newArrayList(allOrderIndex.values());
+		return allOrderIndex.values().stream().map(order -> order.copy()).collect(Collectors.toList());
+	}
+
+	@Override
+	public Order getCopy(long orderId) {
+		return allOrderIndex.get(orderId).copy();
 	}
 	
 	@Override
