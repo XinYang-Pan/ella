@@ -10,11 +10,12 @@ import org.springframework.util.Assert;
 public class Order {
 	private long id;
 	private BigDecimal quantity;
-	private BigDecimal filledQuantity;
+	private BigDecimal filledQuantity = BigDecimal.ZERO;
 	private BigDecimal totalQuantity;
 	// worst price for Market Order
 	private BigDecimal price;
 	private Side side;
+	private Status status;
 	private OrderType orderType;
 	private long orderTs;
 	// for Market Order
@@ -46,7 +47,7 @@ public class Order {
 	
 	@Override
 	public String toString() {
-		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, orderType=%s, orderTs=%s, maxAmount=%s, executions=%s]", id, quantity, filledQuantity, totalQuantity, price, side, orderType, orderTs, maxAmount, executions);
+		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, orderType=%s, orderTs=%s, maxAmount=%s, executions=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, orderType, orderTs, maxAmount, executions);
 	}
 
 	public long getId() {
@@ -127,6 +128,14 @@ public class Order {
 
 	public void setMaxAmount(BigDecimal maxAmount) {
 		this.maxAmount = maxAmount;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 }

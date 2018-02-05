@@ -2,11 +2,14 @@ package io.github.xinyangpan.ella.core;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import org.springframework.util.Assert;
+
+import com.google.common.collect.Maps;
 
 import io.github.xinyangpan.ella.OrderBook;
 import io.github.xinyangpan.ella.core.bo.Order;
@@ -14,6 +17,8 @@ import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookImpl implements OrderBook {
+	private Map<Long, Order> allOrderIndex = Maps.newHashMap();
+	
 	private NavigableMap<BigDecimal, OrderBookEntry> bidMap = new TreeMap<>(Comparator.reverseOrder());
 	private NavigableMap<BigDecimal, OrderBookEntry> askMap = new TreeMap<>();
 
@@ -67,11 +72,11 @@ public class OrderBookImpl implements OrderBook {
 		NavigableMap<BigDecimal, OrderBookEntry> sameSideMap = this.sameSideBook(order.getSide());
 		OrderBookEntry orderBookEntry = sameSideMap.get(order.getPrice());
 		if (orderBookEntry == null) {
-			orderBookEntry = new OrderBookEntry();
+			orderBookEntry = new OrderBookEntry(allOrderIndex);
 			orderBookEntry.setPrice(order.getPrice());
 			sameSideMap.put(order.getPrice(), orderBookEntry);
 		}
-		orderBookEntry.place(order);
+		orderBookEntry.make(order);
 	}
 
 	private boolean isEntryPriceBetterOrSameThanOrderPrice(Order order, Entry<BigDecimal, OrderBookEntry> firstEntry) {

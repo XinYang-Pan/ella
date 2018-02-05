@@ -1,0 +1,10 @@
+package io.github.xinyangpan.ella.core.bo;
+
+public enum Status {
+	// LIVE STATUS, PLACED COULD BE PARTIAL_FILLED
+	PLACING, PLACED,
+	// FINAL STATUS
+	PARTIAL_FILLED, FILLED, NONE_FILLED,
+	CANCELLING, CANCELLED;
+	
+}

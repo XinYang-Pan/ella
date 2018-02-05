@@ -1,0 +1,26 @@
+#app {
+	width: 560px;
+	margin-left: 25%;
+}
+
+.el-row {
+	margin-bottom: 0px;
+	&:
+	last-child
+	{
+	margin-bottom
+	:
+	0;
+}
+
+}
+
+.grid-content {
+	border-radius: 0px;
+	min-height: 36px;
+}
+
+.row-bg {
+	padding: 10px 0;
+	background-color: #f9fafc;
+}
