@@ -10,10 +10,10 @@ public class Execution {
 	private final long makerId;
 	private final long takerId;
 
-	public Execution(BigDecimal price, BigDecimal quantity, long makerId, long takerId) {
+	public Execution(BigDecimal price, BigDecimal quantity, int amountScale, long makerId, long takerId) {
 		this.price = price;
 		this.quantity = quantity;
-		this.amount = this.price.multiply(this.quantity).setScale(Const.AMOUNT_SCALE, RoundingMode.DOWN);
+		this.amount = this.price.multiply(this.quantity).setScale(amountScale, RoundingMode.DOWN);
 		this.makerId = makerId;
 		this.takerId = takerId;
 	}

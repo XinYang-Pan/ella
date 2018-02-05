@@ -16,11 +16,13 @@ import com.google.common.collect.Maps;
 import io.github.xinyangpan.ella.OrderBook;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
+import io.github.xinyangpan.ella.core.bo.ScaleConfig;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookImpl implements OrderBook {
 	private Map<Long, Order> allOrderIndex = Maps.newHashMap();
 	private OrderBookListener orderBookListener;
+	private ScaleConfig scaleConfig;
 	
 	private NavigableMap<BigDecimal, OrderBookEntry> bidMap = new TreeMap<>(Comparator.reverseOrder());
 	private NavigableMap<BigDecimal, OrderBookEntry> askMap = new TreeMap<>();
@@ -55,7 +57,7 @@ public class OrderBookImpl implements OrderBook {
 					oppositeSideMap.remove(firstEntry.getKey());
 				}
 				// 
-				BigDecimal fillableQuantity = order.getFillableQuantity(orderBookEntry.getPrice());
+				BigDecimal fillableQuantity = order.getFillableQuantity(orderBookEntry.getPrice(), scaleConfig.getQuantityScale());
 				Assert.isTrue(fillableQuantity.signum() >= 0 , "Internal Error: quantity");
 				if (fillableQuantity.signum() == 0) {
 					// Order is full filled.
@@ -80,7 +82,7 @@ public class OrderBookImpl implements OrderBook {
 		NavigableMap<BigDecimal, OrderBookEntry> sameSideMap = this.sameSideBook(order.getSide());
 		OrderBookEntry orderBookEntry = sameSideMap.get(order.getPrice());
 		if (orderBookEntry == null) {
-			orderBookEntry = new OrderBookEntry(allOrderIndex, orderBookListener);
+			orderBookEntry = new OrderBookEntry(allOrderIndex, orderBookListener, scaleConfig);
 			orderBookEntry.setPrice(order.getPrice());
 			sameSideMap.put(order.getPrice(), orderBookEntry);
 		}
@@ -163,6 +165,14 @@ public class OrderBookImpl implements OrderBook {
 
 	public void setOrderBookListener(OrderBookListener orderBookListener) {
 		this.orderBookListener = orderBookListener;
+	}
+
+	public ScaleConfig getScaleConfig() {
+		return scaleConfig;
+	}
+
+	public void setScaleConfig(ScaleConfig scaleConfig) {
+		this.scaleConfig = scaleConfig;
 	}
 	
 }

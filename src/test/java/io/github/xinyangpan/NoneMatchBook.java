@@ -6,6 +6,7 @@ import io.github.xinyangpan.ella.core.OrderBookImpl;
 import io.github.xinyangpan.ella.core.OrderBookListener;
 import io.github.xinyangpan.ella.core.bo.Execution;
 import io.github.xinyangpan.ella.core.bo.Order;
+import io.github.xinyangpan.ella.core.bo.ScaleConfig;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public class NoneMatchBook {
@@ -17,6 +18,7 @@ public class NoneMatchBook {
 	// 120.55 1000        
 	public static OrderBookImpl bookSample1() {
 		OrderBookImpl orderBook = new OrderBookImpl();
+		orderBook.setScaleConfig(new ScaleConfig(2, 3));
 		orderBook.setOrderBookListener(new OrderBookListener() {
 			@Override
 			public void onOrder(Order order) {

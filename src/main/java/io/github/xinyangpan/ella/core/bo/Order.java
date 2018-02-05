@@ -52,11 +52,11 @@ public class Order {
 		executions.add(execution);
 	}
 	
-	public BigDecimal getFillableQuantity(BigDecimal price) {
+	public BigDecimal getFillableQuantity(BigDecimal price, int quantityScale) {
 		if (maxAmount == null) {
 			return quantity;
 		}
-		BigDecimal maxQuantity = this.maxAmount.divide(price, Const.QUANTITY_SCALE, RoundingMode.FLOOR);
+		BigDecimal maxQuantity = this.maxAmount.divide(price, quantityScale, RoundingMode.FLOOR);
 		if (quantity == null) {
 			return maxQuantity;
 		}

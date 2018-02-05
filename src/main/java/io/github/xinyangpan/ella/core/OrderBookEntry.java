@@ -14,6 +14,7 @@ import com.google.common.base.Strings;
 import io.github.xinyangpan.ella.core.bo.Execution;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
+import io.github.xinyangpan.ella.core.bo.ScaleConfig;
 import io.github.xinyangpan.ella.core.bo.Side;
 import io.github.xinyangpan.ella.core.bo.Status;
 
@@ -22,13 +23,16 @@ class OrderBookEntry {
 	
 	private final Map<Long, Order> allOrderIndex;
 	private final OrderBookListener orderBookListener;
+	private final ScaleConfig scaleConfig;
+	
 	private BigDecimal price;
 	private BigDecimal totalQuantity = BigDecimal.ZERO;
 	private Deque<Order> orders = new LinkedList<>();
 
-	OrderBookEntry(Map<Long, Order> allOrderIndex, OrderBookListener orderBookListener) {
+	OrderBookEntry(Map<Long, Order> allOrderIndex, OrderBookListener orderBookListener, ScaleConfig scaleConfig) {
 		this.allOrderIndex = allOrderIndex;
 		this.orderBookListener = orderBookListener;
+		this.scaleConfig = scaleConfig;
 	}
 
 	public void make(Order order) {
@@ -44,11 +48,11 @@ class OrderBookEntry {
 		LOGGER.info("Take Order: {}", input);
 		Order order = null;
 		while ((order = orders.pollFirst()) != null) {
-			BigDecimal inputQuantity = input.getFillableQuantity(price);
+			BigDecimal inputQuantity = input.getFillableQuantity(price, scaleConfig.getQuantityScale());
 			BigDecimal fillingQty = order.getQuantity().min(inputQuantity);
 			if (fillingQty.signum() > 0) {
 				totalQuantity = totalQuantity.subtract(fillingQty);
-				Execution execution = new Execution(price, fillingQty, order.getId(), input.getId());
+				Execution execution = new Execution(price, fillingQty, scaleConfig.getAmountScale(), order.getId(), input.getId());
 				input.fill(execution);
 				order.fill(execution);
 				order.versionPlus();
@@ -63,7 +67,7 @@ class OrderBookEntry {
 				}
 				orderBookListener.onExecution(execution);
 				orderBookListener.onOrder(order);
-				if (input.getFillableQuantity(price).signum() <= 0) {
+				if (input.getFillableQuantity(price, scaleConfig.getQuantityScale()).signum() <= 0) {
 					break;
 				}
 			}
