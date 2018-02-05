@@ -65,7 +65,7 @@ public class Order {
 
 	public void complete() {
 		if (filledQuantity.compareTo(BigDecimal.ZERO) == 0) {
-			this.status = Status.FAILED;
+			this.status = Status.CANCEL_FAILED;
 			return;
 		}
 		if (this.totalQuantity == null) {

@@ -85,7 +85,7 @@ class OrderBookEntry {
 			return order;
 		} else {
 			LOGGER.warn("Cancel order failed for {}. ref = {}", input, order);
-			input.setStatus(Status.FAILED);
+			input.setStatus(Status.CANCEL_FAILED);
 			return input;
 		}
 	}

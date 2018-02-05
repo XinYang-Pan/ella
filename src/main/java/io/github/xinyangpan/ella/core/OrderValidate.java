@@ -19,7 +19,7 @@ public class OrderValidate {
 	public void place(Order order) {
 		common(order);
 		marketOrLimit(order);
-		Assert.isTrue(order.getStatus() != Status.PLACING, "Status must be PLACING.");
+		Assert.isTrue(order.getStatus() == Status.PLACING, "Status must be PLACING.");
 		Assert.isTrue(order.getVersion() == 1, "Version has to be 1.");
 		Assert.isTrue(order.getFilledQuantity().compareTo(BigDecimal.ZERO) == 0, "Filled Quantity must be 0.");
 		Assert.isTrue(order.getExecutions().isEmpty(), "Executions must be empty.");
@@ -40,7 +40,7 @@ public class OrderValidate {
 
 	public void cancel(Order input) {
 		common(input);
-		Assert.isTrue(input.getStatus() != Status.CANCELLING, "Status must be PLACING.");
+		Assert.isTrue(input.getStatus() == Status.CANCELLING, "Status must be PLACING.");
 		Assert.isTrue(input.getOrderType() == OrderType.LIMIT, "Must be Limit Order.");
 		// check version
 		Order order = allOrderIndex.get(input.getId());

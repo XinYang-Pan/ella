@@ -72,8 +72,13 @@ public class OrderBookImpl implements OrderBook {
 			}
 		}
 		// No Book Entries are left.
-		if (order.getOrderType() == OrderType.LIMIT) {
+		switch (order.getOrderType()) {
+		case MARKET:
+			order.complete();
+			break;
+		case LIMIT:
 			doPlace(order);
+			break;
 		}
 		return order;
 	}

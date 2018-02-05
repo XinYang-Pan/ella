@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Side;
+import io.github.xinyangpan.ella.core.bo.Status;
 
 public class OrderUtils {
 	private static AtomicLong id = new AtomicLong(1);
@@ -18,6 +19,7 @@ public class OrderUtils {
 		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setPrice(new BigDecimal(String.valueOf(price)));
 		order.setSide(side);
+		order.setStatus(Status.PLACING);
 		order.setOrderTs(System.currentTimeMillis());
 		return order;
 	}
@@ -29,6 +31,7 @@ public class OrderUtils {
 		order.setQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setSide(side);
+		order.setStatus(Status.PLACING);
 		order.setOrderTs(System.currentTimeMillis());
 		return order;
 	}
