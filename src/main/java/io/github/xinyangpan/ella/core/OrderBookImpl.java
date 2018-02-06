@@ -24,8 +24,8 @@ public class OrderBookImpl implements OrderBook {
 	private OrderBookListener orderBookListener;
 	private ScaleConfig scaleConfig;
 	
-	private NavigableMap<BigDecimal, OrderBookEntry> bidMap = new TreeMap<>(Comparator.reverseOrder());
-	private NavigableMap<BigDecimal, OrderBookEntry> askMap = new TreeMap<>();
+	private NavigableMap<BigDecimal, OrderBookEntryImpl> bidMap = new TreeMap<>(Comparator.reverseOrder());
+	private NavigableMap<BigDecimal, OrderBookEntryImpl> askMap = new TreeMap<>();
 	
 	private OrderValidate orderValidate = new OrderValidate(allOrderIndex);
 
@@ -43,12 +43,12 @@ public class OrderBookImpl implements OrderBook {
 	}
 
 	private Order marketAndLimitOrder(Order order) {
-		NavigableMap<BigDecimal, OrderBookEntry> oppositeSideMap = this.otherSideBook(order.getSide());
+		NavigableMap<BigDecimal, OrderBookEntryImpl> oppositeSideMap = this.otherSideBook(order.getSide());
 		// 
-		Entry<BigDecimal, OrderBookEntry> firstEntry = null;
+		Entry<BigDecimal, OrderBookEntryImpl> firstEntry = null;
 		while ((firstEntry = oppositeSideMap.firstEntry()) != null) {
 			if (this.isEntryPriceBetterOrSameThanOrderPrice(order, firstEntry)) {
-				OrderBookEntry orderBookEntry = firstEntry.getValue();
+				OrderBookEntryImpl orderBookEntry = firstEntry.getValue();
 				orderBookEntry.take(order);
 				// 
 				BigDecimal totalQuantity = orderBookEntry.getTotalQuantity();
@@ -84,17 +84,16 @@ public class OrderBookImpl implements OrderBook {
 	}
 
 	private void doPlace(Order order) {
-		NavigableMap<BigDecimal, OrderBookEntry> sameSideMap = this.sameSideBook(order.getSide());
-		OrderBookEntry orderBookEntry = sameSideMap.get(order.getPrice());
+		NavigableMap<BigDecimal, OrderBookEntryImpl> sameSideMap = this.sameSideBook(order.getSide());
+		OrderBookEntryImpl orderBookEntry = sameSideMap.get(order.getPrice());
 		if (orderBookEntry == null) {
-			orderBookEntry = new OrderBookEntry(allOrderIndex, orderBookListener, scaleConfig);
-			orderBookEntry.setPrice(order.getPrice());
+			orderBookEntry = new OrderBookEntryImpl(allOrderIndex, orderBookListener, scaleConfig, order.getPrice());
 			sameSideMap.put(order.getPrice(), orderBookEntry);
 		}
 		orderBookEntry.make(order);
 	}
 
-	private boolean isEntryPriceBetterOrSameThanOrderPrice(Order order, Entry<BigDecimal, OrderBookEntry> firstEntry) {
+	private boolean isEntryPriceBetterOrSameThanOrderPrice(Order order, Entry<BigDecimal, OrderBookEntryImpl> firstEntry) {
 		BigDecimal price = order.getPrice();
 		if (price == null) {
 			return true;
@@ -103,7 +102,7 @@ public class OrderBookImpl implements OrderBook {
 		return side.isFirstPriceBetterOrSame(price, firstEntry.getKey());
 	}
 
-	private NavigableMap<BigDecimal, OrderBookEntry> otherSideBook(Side side) {
+	private NavigableMap<BigDecimal, OrderBookEntryImpl> otherSideBook(Side side) {
 		switch (side) {
 		case SELL:
 			return this.bidMap;
@@ -114,7 +113,7 @@ public class OrderBookImpl implements OrderBook {
 		}
 	}
 
-	private NavigableMap<BigDecimal, OrderBookEntry> sameSideBook(Side side) {
+	private NavigableMap<BigDecimal, OrderBookEntryImpl> sameSideBook(Side side) {
 		switch (side) {
 		case SELL:
 			return this.askMap;
@@ -125,12 +124,23 @@ public class OrderBookImpl implements OrderBook {
 		}
 	}
 
+	private NavigableMap<BigDecimal, OrderBookEntryImpl> getSideBook(Side side) {
+		switch (side) {
+		case SELL:
+			return this.askMap;
+		case BUY:
+			return this.bidMap;
+		default:
+			throw new IllegalArgumentException(side.name());
+		}
+	}
+	
 	@Override
 	public Order cancel(Order order) {
 		orderValidate.cancel(order);
 		order.versionPlus();
-		NavigableMap<BigDecimal, OrderBookEntry> sameSideBook = this.sameSideBook(order.getSide());
-		OrderBookEntry orderBookEntry = sameSideBook.get(order.getPrice());
+		NavigableMap<BigDecimal, OrderBookEntryImpl> sameSideBook = this.sameSideBook(order.getSide());
+		OrderBookEntryImpl orderBookEntry = sameSideBook.get(order.getPrice());
 		return orderBookEntry.cancelOrder(order);
 	}
 	
@@ -153,10 +163,10 @@ public class OrderBookImpl implements OrderBook {
 		int priceLength = 7;
 		int qtyLength = 8;
 		StringBuilder sb = new StringBuilder();
-		for (Entry<BigDecimal, OrderBookEntry> e : askMap.entrySet()) {
+		for (Entry<BigDecimal, OrderBookEntryImpl> e : askMap.entrySet()) {
 			sb.insert(0, System.lineSeparator()).insert(0, e.getValue().toOrderBoardStr(priceLength, qtyLength, Side.SELL));
 		}
-		for (Entry<BigDecimal, OrderBookEntry> e : bidMap.entrySet()) {
+		for (Entry<BigDecimal, OrderBookEntryImpl> e : bidMap.entrySet()) {
 			sb.append(e.getValue().toOrderBoardStr(priceLength, qtyLength, Side.BUY)).append(System.lineSeparator());
 		}
 		sb.insert(0, System.lineSeparator()).insert(0, "****** Order Board ******");
