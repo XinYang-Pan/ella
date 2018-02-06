@@ -23,12 +23,20 @@ public class OrderBookAssert extends AbstractAssert<OrderBookAssert, OrderBook> 
 		return this.depthIs(Side.BUY, depth);
 	}
 
+	public OrderBookAssert bidVolumeIs(double price, double volume) {
+		return this.volumeIs(Side.BUY, new BigDecimal(Double.toString(price)), new BigDecimal(Double.toString(volume)));
+	}
+
 	public OrderBookAssert bidVolumeIs(BigDecimal price, BigDecimal volume) {
 		return this.volumeIs(Side.BUY, price, volume);
 	}
 
 	public OrderBookAssert askDepthIs(int depth) {
 		return this.depthIs(Side.SELL, depth);
+	}
+
+	public OrderBookAssert askVolumeIs(double price, double volume) {
+		return this.volumeIs(Side.SELL, new BigDecimal(Double.toString(price)), new BigDecimal(Double.toString(volume)));
 	}
 
 	public OrderBookAssert askVolumeIs(BigDecimal price, BigDecimal volume) {

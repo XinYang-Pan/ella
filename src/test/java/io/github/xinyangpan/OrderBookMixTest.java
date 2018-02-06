@@ -10,7 +10,7 @@ import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.Side;
 import io.github.xinyangpan.ella.core.bo.Status;
 
-public class OrderBookTest2 {
+public class OrderBookMixTest {
 
 	@Test
 	public void several() {
