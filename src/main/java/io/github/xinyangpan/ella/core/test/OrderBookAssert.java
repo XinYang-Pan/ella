@@ -1,10 +1,13 @@
 package io.github.xinyangpan.ella.core.test;
 
 import java.math.BigDecimal;
+import java.util.NavigableMap;
 
 import org.assertj.core.api.AbstractAssert;
 
 import io.github.xinyangpan.ella.OrderBook;
+import io.github.xinyangpan.ella.core.OrderBookEntry;
+import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookAssert extends AbstractAssert<OrderBookAssert, OrderBook> {
 
@@ -16,55 +19,44 @@ public class OrderBookAssert extends AbstractAssert<OrderBookAssert, OrderBook> 
 		return new OrderBookAssert(actual);
 	}
 
-	public OrderBookAssert bidDepth(int depth) {
-		// check that actual TolkienCharacter we want to make assertions on is not null.
+	public OrderBookAssert bidDepthIs(int depth) {
+		return this.depthIs(Side.BUY, depth);
+	}
+
+	public OrderBookAssert bidVolumeIs(BigDecimal price, BigDecimal volume) {
+		return this.volumeIs(Side.BUY, price, volume);
+	}
+
+	public OrderBookAssert askDepthIs(int depth) {
+		return this.depthIs(Side.SELL, depth);
+	}
+
+	public OrderBookAssert askVolumeIs(BigDecimal price, BigDecimal volume) {
+		return this.volumeIs(Side.SELL, price, volume);
+	}
+
+	public OrderBookAssert depthIs(Side side, int depth) {
 		isNotNull();
 
-		// check condition
-//		if (!Objects.equals(actual.getName(), name)) {
-//			failWithMessage("Expected character's name to be <%s> but was <%s>", name, actual.getName());
-//		}
+		NavigableMap<BigDecimal, OrderBookEntry> sideBook = actual.getSideBook(side);
 
-		// return the current assertion for method chaining
+		// check condition
+		if (sideBook.size() != depth) {
+			failWithMessage("Expected Order Book Depth for <%s> to be <%s> but was <%s>", side, depth, sideBook.size());
+		}
 		return this;
 	}
 
-	public OrderBookAssert bidVolume(BigDecimal price, BigDecimal volume) {
-		// check that actual TolkienCharacter we want to make assertions on is not null.
+	public OrderBookAssert volumeIs(Side side, BigDecimal price, BigDecimal volume) {
 		isNotNull();
 
-		// check condition
-//		if (!Objects.equals(actual.getName(), name)) {
-//			failWithMessage("Expected character's name to be <%s> but was <%s>", name, actual.getName());
-//		}
-
-		// return the current assertion for method chaining
-		return this;
-	}
-
-	public OrderBookAssert askDepth(int depth) {
-		// check that actual TolkienCharacter we want to make assertions on is not null.
-		isNotNull();
+		NavigableMap<BigDecimal, OrderBookEntry> sideBook = actual.getSideBook(side);
+		OrderBookEntry orderBookEntry = sideBook.get(price);
 
 		// check condition
-//		if (!Objects.equals(actual.getName(), name)) {
-//			failWithMessage("Expected character's name to be <%s> but was <%s>", name, actual.getName());
-//		}
-
-		// return the current assertion for method chaining
-		return this;
-	}
-
-	public OrderBookAssert askVolume(BigDecimal price, BigDecimal volume) {
-		// check that actual TolkienCharacter we want to make assertions on is not null.
-		isNotNull();
-
-		// check condition
-//		if (!Objects.equals(actual.getName(), name)) {
-//			failWithMessage("Expected character's name to be <%s> but was <%s>", name, actual.getName());
-//		}
-
-		// return the current assertion for method chaining
+		if (orderBookEntry.getTotalQuantity().compareTo(volume) != 0) {
+			failWithMessage("Expected Order Book Volume for <%s-%s> to be <%s> but was <%s>", side, price, volume, orderBookEntry.getTotalQuantity());
+		}
 		return this;
 	}
 

@@ -16,9 +16,9 @@ public class OrderBookTest2 {
 	public void several() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		System.out.println(orderBook.toOrderBoardStr());
-//		System.out.println(orderBook.placeOrder(limit(Side.SELL, 1500, 120.01)));
-		System.out.println(orderBook.placeOrder(market(Side.SELL, 15000)));
-		System.out.println(orderBook.placeOrder(market(Side.SELL, 15000)));
+		System.out.println(orderBook.placeOrder(limit(Side.SELL, 1500, 120.01)));
+//		System.out.println(orderBook.placeOrder(market(Side.SELL, 15000)));
+//		System.out.println(orderBook.placeOrder(market(Side.SELL, 15000)));
 		System.out.println(orderBook.toOrderBoardStr());
 		System.out.println(orderBook.placeOrder(limit(Side.SELL, 500, 120.01)));
 		System.out.println(orderBook.toOrderBoardStr());
