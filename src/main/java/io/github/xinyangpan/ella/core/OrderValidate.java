@@ -19,6 +19,7 @@ public class OrderValidate {
 	public void place(Order order) {
 		common(order);
 		marketOrLimit(order);
+		Assert.isTrue(order.getOrderTs() == 0, "Order Time should NOT be set.");
 		Assert.isTrue(order.getStatus() == Status.PLACING, "Status must be PLACING.");
 		Assert.isTrue(order.getVersion() == 1, "Version has to be 1.");
 		Assert.isTrue(order.getFilledQuantity().compareTo(BigDecimal.ZERO) == 0, "Filled Quantity must be 0.");

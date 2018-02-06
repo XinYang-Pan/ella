@@ -20,7 +20,6 @@ public class OrderUtils {
 		order.setPrice(new BigDecimal(String.valueOf(price)));
 		order.setSide(side);
 		order.setStatus(Status.PLACING);
-		order.setOrderTs(System.currentTimeMillis());
 		return order;
 	}
 
@@ -32,7 +31,6 @@ public class OrderUtils {
 		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setSide(side);
 		order.setStatus(Status.PLACING);
-		order.setOrderTs(System.currentTimeMillis());
 		return order;
 	}
 

@@ -32,6 +32,7 @@ public class OrderBookImpl implements OrderBook {
 	@Override
 	public Order placeOrder(Order order) {
 		orderValidate.place(order);
+		order.setOrderTs(System.currentTimeMillis());
 		order.versionPlus();
 		switch (order.getOrderType()) {
 		case MARKET:

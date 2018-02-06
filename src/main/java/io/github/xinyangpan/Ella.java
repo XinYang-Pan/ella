@@ -37,7 +37,6 @@ public class Ella {
 		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setPrice(new BigDecimal(String.valueOf(price)));
 		order.setSide(side);
-		order.setOrderTs(System.currentTimeMillis());
 		return order;
 	}
 
@@ -48,7 +47,6 @@ public class Ella {
 		order.setQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setSide(side);
-		order.setOrderTs(System.currentTimeMillis());
 		return order;
 	}
 

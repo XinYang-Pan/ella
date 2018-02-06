@@ -1,12 +1,14 @@
 package io.github.xinyangpan;
 
 import static io.github.xinyangpan.OrderUtils.limit;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
 import io.github.xinyangpan.ella.core.OrderBookImpl;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.Side;
+import io.github.xinyangpan.ella.core.bo.Status;
 import io.github.xinyangpan.ella.core.test.OrderBookAssert;
 
 public class OrderBookLimitTest {
@@ -26,7 +28,12 @@ public class OrderBookLimitTest {
 			.bidVolumeIs(120.55, 1000);
 		Order order = orderBook.placeOrder(limit(Side.SELL, 500, 120.01));
 		System.out.println(order);
-		// 
+		// Order
+		assertThat(order.getStatus()).isEqualTo(Status.FILLED);
+		assertThat(order.getQuantity()).isEqualByComparingTo("0");
+		assertThat(order.getFilledQuantity()).isEqualByComparingTo("500");
+		assertThat(order.getVersion()).isEqualTo(2);
+		// Order Book
 		OrderBookAssert.assertThat(orderBook)
 			.askDepthIs(3)
 			.askVolumeIs(120.61, 1000)
