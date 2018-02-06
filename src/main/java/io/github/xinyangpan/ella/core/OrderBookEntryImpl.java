@@ -18,11 +18,11 @@ import io.github.xinyangpan.ella.core.bo.Status;
 
 class OrderBookEntryImpl extends OrderBookEntry {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderBookEntryImpl.class);
-	
+
 	private final Map<Long, Order> allOrderIndex;
 	private final OrderBookListener orderBookListener;
 	private final ScaleConfig scaleConfig;
-	
+
 	OrderBookEntryImpl(Map<Long, Order> allOrderIndex, OrderBookListener orderBookListener, ScaleConfig scaleConfig, BigDecimal price) {
 		this.allOrderIndex = allOrderIndex;
 		this.orderBookListener = orderBookListener;
@@ -69,7 +69,7 @@ class OrderBookEntryImpl extends OrderBookEntry {
 		}
 		LOGGER.info("Take Order Result: {}", input);
 	}
-	
+
 	public Order cancelOrder(Order input) {
 		LOGGER.info("Cancel Order: {}", input);
 		Assert.notNull(input, "Order can not be null.");

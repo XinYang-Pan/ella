@@ -24,20 +24,20 @@ public class Order {
 	private List<Execution> executions = new ArrayList<>();
 
 	public Order copy() {
-		Order clone = new Order();
-		clone.id = this.id;
-		clone.quantity = this.quantity;
-		clone.filledQuantity = this.filledQuantity;
-		clone.totalQuantity = this.totalQuantity;
-		clone.price = this.price;
-		clone.side = this.side;
-		clone.status = this.status;
-		clone.orderType = this.orderType;
-		clone.orderTs = this.orderTs;
-		clone.version = this.version;
-		clone.maxAmount = this.maxAmount;
-		clone.executions.addAll(this.executions);
-		return clone;
+		Order copy = new Order();
+		copy.id = this.id;
+		copy.quantity = this.quantity;
+		copy.filledQuantity = this.filledQuantity;
+		copy.totalQuantity = this.totalQuantity;
+		copy.price = this.price;
+		copy.side = this.side;
+		copy.status = this.status;
+		copy.orderType = this.orderType;
+		copy.orderTs = this.orderTs;
+		copy.version = this.version;
+		copy.maxAmount = this.maxAmount;
+		copy.executions.addAll(this.executions);
+		return copy;
 	}
 	
 	public void fill(Execution execution) {

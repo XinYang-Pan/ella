@@ -124,15 +124,13 @@ public class OrderBookImpl implements OrderBook {
 		}
 	}
 
-	private NavigableMap<BigDecimal, OrderBookEntryImpl> getSideBook(Side side) {
-		switch (side) {
-		case SELL:
-			return this.askMap;
-		case BUY:
-			return this.bidMap;
-		default:
-			throw new IllegalArgumentException(side.name());
+	public NavigableMap<BigDecimal, OrderBookEntry> getSideBook(Side side) {
+		NavigableMap<BigDecimal, OrderBookEntryImpl> sideBook = this.sameSideBook(side);
+		NavigableMap<BigDecimal, OrderBookEntry> result = Maps.newTreeMap(sideBook.comparator());
+		for (Entry<BigDecimal, OrderBookEntryImpl> e : sideBook.entrySet()) {
+			result.put(e.getKey(), e.getValue().copy());
 		}
+		return result;
 	}
 	
 	@Override
