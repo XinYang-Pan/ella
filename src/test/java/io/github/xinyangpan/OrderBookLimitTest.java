@@ -1,15 +1,15 @@
 package io.github.xinyangpan;
 
 import static io.github.xinyangpan.OrderUtils.limit;
-import static org.assertj.core.api.Assertions.assertThat;
+import static io.github.xinyangpan.ella.core.test.AssertJ.assertThat;
 
 import org.junit.Test;
 
 import io.github.xinyangpan.ella.core.OrderBookImpl;
+import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.Side;
 import io.github.xinyangpan.ella.core.bo.Status;
-import io.github.xinyangpan.ella.core.test.OrderBookAssert;
 
 public class OrderBookLimitTest {
 
@@ -17,7 +17,7 @@ public class OrderBookLimitTest {
 	public void limitSell500() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
-		OrderBookAssert.assertThat(orderBook)
+		assertThat(orderBook)
 			.askDepthIs(3)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -29,12 +29,11 @@ public class OrderBookLimitTest {
 		Order order = orderBook.placeOrder(limit(Side.SELL, 500, 120.01));
 		System.out.println(order);
 		// Order
-		assertThat(order.getStatus()).isEqualTo(Status.FILLED);
-		assertThat(order.getQuantity()).isEqualByComparingTo("0");
-		assertThat(order.getFilledQuantity()).isEqualByComparingTo("500");
-		assertThat(order.getVersion()).isEqualTo(2);
+		assertThat(order).is(Status.FILLED, Action.EXECUTED).quantityIs(0).filledQuantityIs(500).versionIs(2)
+			.executionSizeIs(1)
+			.hasExecution(1, 120.57, 500, 60285);
 		// Order Book
-		OrderBookAssert.assertThat(orderBook)
+		assertThat(orderBook)
 			.askDepthIs(3)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -49,7 +48,7 @@ public class OrderBookLimitTest {
 	public void limitSell5000() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
-		OrderBookAssert.assertThat(orderBook)
+		assertThat(orderBook)
 			.askDepthIs(3)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -60,8 +59,14 @@ public class OrderBookLimitTest {
 			.bidVolumeIs(120.55, 1000);
 		Order order = orderBook.placeOrder(limit(Side.SELL, 5000, 120.01));
 		System.out.println(order);
-		// 
-		OrderBookAssert.assertThat(orderBook)
+		// Order
+		assertThat(order).is(Status.LIVE, Action.PLACED).quantityIs(2000).filledQuantityIs(3000).versionIs(2)
+			.executionSizeIs(3)
+			.hasExecution(1, 120.57, 1000, 120570)
+			.hasExecution(2, 120.56, 1000, 120560)
+			.hasExecution(3, 120.55, 1000, 120550);
+		// Order Book
+		assertThat(orderBook)
 			.askDepthIs(4)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -74,7 +79,7 @@ public class OrderBookLimitTest {
 	public void limitBuy500() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
-		OrderBookAssert.assertThat(orderBook)
+		assertThat(orderBook)
 			.askDepthIs(3)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -85,8 +90,12 @@ public class OrderBookLimitTest {
 			.bidVolumeIs(120.55, 1000);
 		Order order = orderBook.placeOrder(limit(Side.BUY, 500, 130.01));
 		System.out.println(order);
-		// 
-		OrderBookAssert.assertThat(orderBook)
+		// Order
+		assertThat(order).is(Status.FILLED, Action.EXECUTED).quantityIs(0).filledQuantityIs(500).versionIs(2)
+			.executionSizeIs(1)
+			.hasExecution(1, 120.58, 500, 60290);
+		// Order Book
+		assertThat(orderBook)
 			.askDepthIs(3)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -101,7 +110,7 @@ public class OrderBookLimitTest {
 	public void limitBuy5000() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
-		OrderBookAssert.assertThat(orderBook)
+		assertThat(orderBook)
 			.askDepthIs(3)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -112,8 +121,14 @@ public class OrderBookLimitTest {
 			.bidVolumeIs(120.55, 1000);
 		Order order = orderBook.placeOrder(limit(Side.BUY, 5000, 130.01));
 		System.out.println(order);
-		// 
-		OrderBookAssert.assertThat(orderBook)
+		// Order
+		assertThat(order).is(Status.LIVE, Action.PLACED).quantityIs(2000).filledQuantityIs(3000).versionIs(2)
+			.executionSizeIs(3)
+			.hasExecution(1, 120.58, 1000, 120580)
+			.hasExecution(2, 120.59, 1000, 120590)
+			.hasExecution(3, 120.61, 1000, 120610);
+		// Order Book
+		assertThat(orderBook)
 			.askDepthIs(0)
 			.bidDepthIs(4)
 			.bidVolumeIs(130.01, 2000)

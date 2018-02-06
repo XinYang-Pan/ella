@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 
 import com.google.common.base.Strings;
 
+import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Execution;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
@@ -36,7 +37,8 @@ class OrderBookEntryImpl extends OrderBookEntry {
 		orders.add(order);
 		totalQuantity = totalQuantity.add(order.getQuantity());
 		allOrderIndex.put(order.getId(), order);
-		order.setStatus(Status.PLACED);
+		order.setStatus(Status.LIVE);
+		order.setAction(Action.PLACED);
 	}
 
 	public void take(Order input) {
@@ -58,7 +60,7 @@ class OrderBookEntryImpl extends OrderBookEntry {
 					// no more quantity, remove from all order
 					allOrderIndex.remove(order.getId());
 					Assert.isTrue(order.getFilledQuantity().compareTo(order.getTotalQuantity()) == 0, "Maker Order should be full filled.");
-					order.setStatus(Status.FILLED);
+					order.complete(Action.EXECUTED);
 				}
 				orderBookListener.onExecution(execution);
 				orderBookListener.onOrder(order);
@@ -76,11 +78,11 @@ class OrderBookEntryImpl extends OrderBookEntry {
 		Assert.isTrue(input.getOrderType() == OrderType.LIMIT, "Order must be limit.");
 		Order order = allOrderIndex.remove(input.getId());
 		if (order != null && orders.remove(order)) {
-			order.setStatus(Status.CANCELLED);
+			order.complete(Action.CANCELED);
 			return order;
 		} else {
 			LOGGER.warn("Cancel order failed for {}. ref = {}", input, order);
-			input.setStatus(Status.CANCEL_FAILED);
+			order.setAction(Action.CANCEL_FAILED);
 			return input;
 		}
 	}

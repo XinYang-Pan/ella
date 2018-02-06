@@ -15,10 +15,6 @@ public class OrderBookAssert extends AbstractAssert<OrderBookAssert, OrderBook> 
 		super(actual, OrderBookAssert.class);
 	}
 
-	public static OrderBookAssert assertThat(OrderBook actual) {
-		return new OrderBookAssert(actual);
-	}
-
 	public OrderBookAssert bidDepthIs(int depth) {
 		return this.depthIs(Side.BUY, depth);
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
+import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Status;
@@ -20,7 +21,7 @@ public class OrderValidate {
 		common(order);
 		marketOrLimit(order);
 		Assert.isTrue(order.getOrderTs() == 0, "Order Time should NOT be set.");
-		Assert.isTrue(order.getStatus() == Status.PLACING, "Status must be PLACING.");
+		Assert.isTrue(order.getAction() == Action.PLACING, "Action must be PLACING.");
 		Assert.isTrue(order.getVersion() == 1, "Version has to be 1.");
 		Assert.isTrue(order.getFilledQuantity().compareTo(BigDecimal.ZERO) == 0, "Filled Quantity must be 0.");
 		Assert.isTrue(order.getExecutions().isEmpty(), "Executions must be empty.");
@@ -41,7 +42,7 @@ public class OrderValidate {
 
 	public void cancel(Order input) {
 		common(input);
-		Assert.isTrue(input.getStatus() == Status.CANCELLING, "Status must be PLACING.");
+		Assert.isTrue(input.getAction() == Action.CANCELING, "Action must be CANCELING.");
 		Assert.isTrue(input.getOrderType() == OrderType.LIMIT, "Must be Limit Order.");
 		// check version
 		Order order = allOrderIndex.get(input.getId());
@@ -55,6 +56,7 @@ public class OrderValidate {
 		Assert.isTrue(input.getId() != 0, "Id can not be 0.");
 		Assert.notNull(input.getOrderType(), "Order Type can not be null.");
 		Assert.notNull(input.getSide(), "Side can not be null.");
+		Assert.isTrue(input.getStatus() == Status.LIVE, "Status must be LIVE.");
 	}
 
 	private void market(Order order) {

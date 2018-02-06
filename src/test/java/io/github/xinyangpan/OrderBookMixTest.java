@@ -1,14 +1,14 @@
 package io.github.xinyangpan;
 
 import static io.github.xinyangpan.OrderUtils.limit;
+import static io.github.xinyangpan.ella.core.test.AssertJ.assertThat;
 
 import org.junit.Test;
 
 import io.github.xinyangpan.ella.core.OrderBookImpl;
+import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.Side;
-import io.github.xinyangpan.ella.core.bo.Status;
-import io.github.xinyangpan.ella.core.test.OrderBookAssert;
 
 public class OrderBookMixTest {
 
@@ -16,7 +16,7 @@ public class OrderBookMixTest {
 	public void several() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
-		OrderBookAssert.assertThat(orderBook)
+		assertThat(orderBook)
 			.askDepthIs(3)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -31,7 +31,7 @@ public class OrderBookMixTest {
 		System.out.println(orderBook.placeOrder(limit(Side.SELL, 500, 120.58)));
 		System.out.println(orderBook.placeOrder(limit(Side.SELL, 500, 120.57)));
 		// 
-		OrderBookAssert.assertThat(orderBook)
+		assertThat(orderBook)
 			.askDepthIs(4)
 			.askVolumeIs(120.61, 1000)
 			.askVolumeIs(120.59, 1000)
@@ -65,7 +65,7 @@ public class OrderBookMixTest {
 		System.out.println(orderBook.snapshot());
 		order = order.copy();
 		order.versionPlus();
-		order.setStatus(Status.CANCELLING);
+		order.setAction(Action.CANCELING);
 		System.out.println(orderBook.cancel(order));
 		System.out.println(orderBook.snapshot());
 	}

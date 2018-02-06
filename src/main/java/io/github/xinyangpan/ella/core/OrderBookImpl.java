@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 import com.google.common.collect.Maps;
 
 import io.github.xinyangpan.ella.OrderBook;
+import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.ScaleConfig;
@@ -62,7 +63,7 @@ public class OrderBookImpl implements OrderBook {
 				Assert.isTrue(fillableQuantity.signum() >= 0 , "Internal Error: quantity");
 				if (fillableQuantity.signum() == 0) {
 					// Order is full filled.
-					order.complete();
+					order.complete(Action.EXECUTED);
 					return order;
 				}
 			} else {
@@ -75,7 +76,7 @@ public class OrderBookImpl implements OrderBook {
 		// No Book Entries are left.
 		switch (order.getOrderType()) {
 		case MARKET:
-			order.complete();
+			order.complete(Action.EXECUTED);
 			break;
 		case LIMIT:
 			doPlace(order);

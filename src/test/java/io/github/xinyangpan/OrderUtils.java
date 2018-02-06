@@ -3,6 +3,7 @@ package io.github.xinyangpan;
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicLong;
 
+import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.Side;
@@ -19,7 +20,8 @@ public class OrderUtils {
 		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setPrice(new BigDecimal(String.valueOf(price)));
 		order.setSide(side);
-		order.setStatus(Status.PLACING);
+		order.setStatus(Status.LIVE);
+		order.setAction(Action.PLACING);
 		return order;
 	}
 
@@ -30,7 +32,8 @@ public class OrderUtils {
 		order.setQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
 		order.setSide(side);
-		order.setStatus(Status.PLACING);
+		order.setStatus(Status.LIVE);
+		order.setAction(Action.PLACING);
 		return order;
 	}
 

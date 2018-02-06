@@ -16,6 +16,7 @@ public class Order {
 	private BigDecimal price;
 	private Side side;
 	private Status status;
+	private Action action;
 	private OrderType orderType;
 	private long orderTs;
 	private int version = 1;
@@ -32,6 +33,7 @@ public class Order {
 		copy.price = this.price;
 		copy.side = this.side;
 		copy.status = this.status;
+		copy.action = this.action;
 		copy.orderType = this.orderType;
 		copy.orderTs = this.orderTs;
 		copy.version = this.version;
@@ -63,9 +65,10 @@ public class Order {
 		return maxQuantity.min(quantity);
 	}
 
-	public void complete() {
+	public void complete(Action action) {
+		this.action = action;
 		if (filledQuantity.compareTo(BigDecimal.ZERO) == 0) {
-			this.status = Status.CANCEL_FAILED;
+			this.status = Status.NONE_FILLED;
 			return;
 		}
 		if (this.totalQuantity == null) {
@@ -84,7 +87,7 @@ public class Order {
 	
 	@Override
 	public String toString() {
-		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, orderType=%s, orderTs=%s, version=%s, maxAmount=%s, executions=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, orderType, orderTs, version, maxAmount, executions);
+		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, action=%s, orderType=%s, orderTs=%s, version=%s, maxAmount=%s, executions=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, action, orderType, orderTs, version, maxAmount, executions);
 	}
 
 	public long getId() {
@@ -181,6 +184,14 @@ public class Order {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	public Action getAction() {
+		return action;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
 	}
 
 }
