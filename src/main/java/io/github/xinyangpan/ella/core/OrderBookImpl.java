@@ -19,6 +19,7 @@ import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.ScaleConfig;
 import io.github.xinyangpan.ella.core.bo.Side;
+import io.github.xinyangpan.ella.core.bo.Status;
 
 public class OrderBookImpl implements OrderBook {
 	private Map<Long, Order> allOrderIndex = Maps.newHashMap();
@@ -42,6 +43,22 @@ public class OrderBookImpl implements OrderBook {
 		default:
 			throw new IllegalArgumentException(String.format("Order Type not supported.", order.getOrderType()));
 		}
+	}
+	
+	@Override
+	public Order modifyOrder(Order order) {
+		orderValidate.modify(order);
+		order.setAction(Action.CANCELING);
+		order = this.cancel(order);
+		if (order != null && order.getAction() == Action.CANCELED) {
+			order.setStatus(Status.LIVE);
+			order.setAction(Action.PLACING);
+			this.placeOrder(order);
+			order.setAction(Action.MODIFIED);
+			return order;
+		}
+		order.setAction(Action.MODIFY_FAILED);
+		return order;
 	}
 
 	private Order marketAndLimitOrder(Order order) {

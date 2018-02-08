@@ -48,7 +48,10 @@ public class OrderValidate {
 		Order order = allOrderIndex.get(input.getId());
 		Assert.notNull(order, "Order is not found.");
 		Assert.isTrue(input.getVersion() - order.getVersion() == 1, "Version Not Match.");
+	}
 
+	public void modify(Order order) {
+		
 	}
 
 	private void common(Order input) {

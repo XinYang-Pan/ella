@@ -13,11 +13,14 @@ public interface OrderBook {
 	Order placeOrder(Order order);
 
 	Order cancel(Order order);
+	
+	Order modifyOrder(Order order);
 
 	Order getCopy(long orderId);
 
 	List<Order> snapshot();
 
 	NavigableMap<BigDecimal, OrderBookEntry> getSideBook(Side side);
+
 
 }
