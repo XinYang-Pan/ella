@@ -4,7 +4,7 @@
 
 	<groupId>io.github.xinyang-pan</groupId>
 	<artifactId>ella</artifactId>
-	<version>0.0.1.SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>ella</name>
@@ -54,7 +54,8 @@
 	<scm>
 		<connection>scm:git:https://github.com/XinYang-Pan/ella.git</connection>
 		<developerConnection>scm:git:https://github.com/XinYang-Pan/ella.git</developerConnection>
-	</scm>
+	  <tag>ella-0.0.1</tag>
+  </scm>
 
 	<distributionManagement>
 		<repository>
