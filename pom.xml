@@ -77,8 +77,6 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
 				<configuration>
-					<username>seanpan2008@gmail.com</username>
-					<password>yang1213</password>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
