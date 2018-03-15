@@ -76,17 +76,9 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
 				<configuration>
-<!-- 					<username>seanpan2008@gmail.com</username> -->
-					<tagNameFormat>v@{project.version}</tagNameFormat>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-plugin</artifactId>
-				<version>1.9.5</version>
-				<configuration>
 					<username>seanpan2008@gmail.com</username>
-					<password>yang1213</password>
+					<password>{9aP+tqsINIAHKF5KRQWHd8RV2tKpDpHGHSg+UmBXDZ8=}</password>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 		</plugins>
