@@ -78,6 +78,7 @@
 				<version>2.5.3</version>
 				<configuration>
 					<username>seanpan2008@gmail.com</username>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 		</plugins>
