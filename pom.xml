@@ -88,7 +88,6 @@
 				<configuration>
 					<username>seanpan2008@gmail.com</username>
 					<password>yang1213</password>
-					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 		</plugins>
