@@ -78,7 +78,7 @@
 				<version>2.5.3</version>
 				<configuration>
 					<username>seanpan2008@gmail.com</username>
-					<password>yang1213</password>
+					<password>{wzL1ljE2gbgH4yFbe28GUiJwWjLYcnl1zXThJ+Jgdng=}</password>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
