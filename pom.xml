@@ -77,9 +77,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
 				<configuration>
-					<localCheckout>true</localCheckout>	
 					<username>seanpan2008@gmail.com</username>
-					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 		</plugins>
