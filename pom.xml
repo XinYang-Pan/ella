@@ -58,15 +58,15 @@
 	</scm>
 
 	<distributionManagement>
-		<repository>
+		<repository>	
 			<id>my-release</id>
 			<name>my-release</name>
-			<url>http://47.94.229.236:8081/nexus/content/repositories/releases/</url>
+			<url>http://47.94.229.236:8081/repository/maven-releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>my-snapshot</id>
 			<name>my-snapshot</name>
-			<url>http://47.94.229.236:8081/nexus/content/repositories/snapshots/</url>
+			<url>http://47.94.229.236:8081/repository/maven-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
