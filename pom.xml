@@ -58,7 +58,7 @@
 	</scm>
 
 	<distributionManagement>
-		<repository>	
+		<repository>
 			<id>my-release</id>
 			<name>my-release</name>
 			<url>http://47.94.229.236:8081/repository/maven-releases/</url>
@@ -79,6 +79,15 @@
 				<configuration>
 					<username>seanpan2008@gmail.com</username>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>1.0-m5.1</version>
+				<configuration>
+					<username>seanpan2008@gmail.com</username>
+					<password>yang1213</password>
 				</configuration>
 			</plugin>
 		</plugins>
