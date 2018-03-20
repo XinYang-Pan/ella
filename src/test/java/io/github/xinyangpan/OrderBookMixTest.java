@@ -8,6 +8,7 @@ import org.junit.Test;
 import io.github.xinyangpan.ella.core.OrderBookImpl;
 import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Order;
+import io.github.xinyangpan.ella.core.bo.OrderResult;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public class OrderBookMixTest {
@@ -59,11 +60,11 @@ public class OrderBookMixTest {
 		System.out.println(orderBook.toOrderBoardStr());
 		System.out.println(orderBook.placeOrder(limit(Side.SELL, 500, 120.57)));
 		System.out.println(orderBook.toOrderBoardStr());
-		Order order = orderBook.placeOrder(limit(Side.BUY, 1000, 120.57));
-		System.out.println(order);
+		OrderResult orderResult = orderBook.placeOrder(limit(Side.BUY, 1000, 120.57));
+		System.out.println(orderResult);
 		System.out.println(orderBook.toOrderBoardStr());
 		System.out.println(orderBook.snapshot());
-		order = order.copy();
+		Order order = orderResult.getOrder().copy();
 		order.versionPlus();
 		order.setAction(Action.CANCELING);
 		System.out.println(orderBook.cancel(order));

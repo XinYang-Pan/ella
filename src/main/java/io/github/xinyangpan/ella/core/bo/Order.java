@@ -2,8 +2,6 @@ package io.github.xinyangpan.ella.core.bo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.util.Assert;
 
@@ -22,7 +20,6 @@ public class Order {
 	private int version = 1;
 	// for Market Order
 	private BigDecimal maxAmount;
-	private List<Execution> executions = new ArrayList<>();
 
 	public Order copy() {
 		Order copy = new Order();
@@ -43,7 +40,6 @@ public class Order {
 		copy.orderTs = this.orderTs;
 		copy.version = this.version;
 		copy.maxAmount = this.maxAmount;
-		copy.executions.addAll(this.executions);
 	}
 	
 	public void fill(Execution execution) {
@@ -55,7 +51,6 @@ public class Order {
 		Assert.isTrue(quantity.compareTo(this.quantity) <= 0, "Target quantity is greater than remaining one.");
 		this.quantity = this.quantity.subtract(quantity);
 		this.filledQuantity = this.filledQuantity.add(quantity);
-		executions.add(execution);
 	}
 	
 	public BigDecimal getFillableQuantity(BigDecimal price, int quantityScale) {
@@ -91,7 +86,7 @@ public class Order {
 	
 	@Override
 	public String toString() {
-		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, action=%s, orderType=%s, orderTs=%s, version=%s, maxAmount=%s, executions=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, action, orderType, orderTs, version, maxAmount, executions);
+		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, action=%s, orderType=%s, orderTs=%s, version=%s, maxAmount=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, action, orderType, orderTs, version, maxAmount);
 	}
 
 	public long getId() {
@@ -156,14 +151,6 @@ public class Order {
 
 	public void setTotalQuantity(BigDecimal totalQuantity) {
 		this.totalQuantity = totalQuantity;
-	}
-
-	public List<Execution> getExecutions() {
-		return executions;
-	}
-
-	public void setExecutions(List<Execution> executions) {
-		this.executions = executions;
 	}
 
 	public BigDecimal getMaxAmount() {

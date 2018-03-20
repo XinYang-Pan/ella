@@ -15,7 +15,9 @@ import com.google.common.collect.Maps;
 
 import io.github.xinyangpan.ella.OrderBook;
 import io.github.xinyangpan.ella.core.bo.Action;
+import io.github.xinyangpan.ella.core.bo.Execution;
 import io.github.xinyangpan.ella.core.bo.Order;
+import io.github.xinyangpan.ella.core.bo.OrderResult;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.ScaleConfig;
 import io.github.xinyangpan.ella.core.bo.Side;
@@ -32,7 +34,7 @@ public class OrderBookImpl implements OrderBook {
 	private OrderValidate orderValidate = new OrderValidate(allOrderIndex);
 
 	@Override
-	public Order placeOrder(Order order) {
+	public OrderResult placeOrder(Order order) {
 		orderValidate.place(order);
 		order.setOrderTs(System.currentTimeMillis());
 		order.versionPlus();
@@ -61,14 +63,17 @@ public class OrderBookImpl implements OrderBook {
 		return order;
 	}
 
-	private Order marketAndLimitOrder(Order order) {
+	private OrderResult marketAndLimitOrder(Order order) {
+		OrderResult orderResult = new OrderResult();
+		orderResult.setOrder(order);
 		NavigableMap<BigDecimal, OrderBookEntryImpl> oppositeSideMap = this.otherSideBook(order.getSide());
 		// 
 		Entry<BigDecimal, OrderBookEntryImpl> firstEntry = null;
 		while ((firstEntry = oppositeSideMap.firstEntry()) != null) {
 			if (this.isEntryPriceBetterOrSameThanOrderPrice(order, firstEntry)) {
 				OrderBookEntryImpl orderBookEntry = firstEntry.getValue();
-				orderBookEntry.take(order);
+				List<Execution> executions = orderBookEntry.take(order);
+				orderResult.getExecutions().addAll(executions);
 				// 
 				BigDecimal totalQuantity = orderBookEntry.getTotalQuantity();
 				Assert.isTrue(totalQuantity.signum() >= 0 , "Internal Error: totalQuantity");
@@ -81,13 +86,13 @@ public class OrderBookImpl implements OrderBook {
 				if (fillableQuantity.signum() == 0) {
 					// Order is full filled.
 					order.complete(Action.EXECUTED);
-					return order;
+					return orderResult;
 				}
 			} else {
 				// Order (Limit) has unfilled quantity.
 				Assert.isTrue(order.getOrderType() == OrderType.LIMIT , "Internal Error: quantity");
 				doPlace(order);
-				return order;
+				return orderResult;
 			}
 		}
 		// No Book Entries are left.
@@ -99,7 +104,7 @@ public class OrderBookImpl implements OrderBook {
 			doPlace(order);
 			break;
 		}
-		return order;
+		return orderResult;
 	}
 
 	private void doPlace(Order order) {

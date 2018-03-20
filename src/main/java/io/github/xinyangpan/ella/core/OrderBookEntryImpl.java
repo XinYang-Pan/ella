@@ -1,6 +1,7 @@
 package io.github.xinyangpan.ella.core;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
 import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Execution;
@@ -41,15 +43,17 @@ class OrderBookEntryImpl extends OrderBookEntry {
 		order.setAction(Action.PLACED);
 	}
 
-	public void take(Order input) {
+	public List<Execution> take(Order input) {
 		LOGGER.info("Take Order: {}", input);
 		Order order = null;
+		List<Execution> executions = Lists.newArrayList();
 		while ((order = orders.pollFirst()) != null) {
 			BigDecimal inputQuantity = input.getFillableQuantity(price, scaleConfig.getQuantityScale());
 			BigDecimal fillingQty = order.getQuantity().min(inputQuantity);
 			if (fillingQty.signum() > 0) {
 				totalQuantity = totalQuantity.subtract(fillingQty);
 				Execution execution = new Execution(price, fillingQty, scaleConfig.getAmountScale(), order, input);
+				executions.add(execution);
 				input.fill(execution);
 				order.fill(execution);
 				order.versionPlus();
@@ -70,6 +74,7 @@ class OrderBookEntryImpl extends OrderBookEntry {
 			}
 		}
 		LOGGER.info("Take Order Result: {}", input);
+		return executions;
 	}
 
 	public Order cancelOrder(Order input) {

@@ -6,11 +6,12 @@ import java.util.NavigableMap;
 
 import io.github.xinyangpan.ella.core.OrderBookEntry;
 import io.github.xinyangpan.ella.core.bo.Order;
+import io.github.xinyangpan.ella.core.bo.OrderResult;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public interface OrderBook {
 
-	Order placeOrder(Order order);
+	OrderResult placeOrder(Order order);
 
 	Order cancel(Order order);
 	

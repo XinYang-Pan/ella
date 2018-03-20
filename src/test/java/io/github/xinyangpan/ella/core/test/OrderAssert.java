@@ -10,11 +10,12 @@ import io.github.xinyangpan.ella.core.EllaUtils;
 import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Execution;
 import io.github.xinyangpan.ella.core.bo.Order;
+import io.github.xinyangpan.ella.core.bo.OrderResult;
 import io.github.xinyangpan.ella.core.bo.Status;
 
-public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
+public class OrderAssert extends AbstractAssert<OrderAssert, OrderResult> {
 
-	public OrderAssert(Order actual) {
+	public OrderAssert(OrderResult actual) {
 		super(actual, OrderAssert.class);
 	}
 
@@ -25,22 +26,26 @@ public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
 //		}
 //		return this;
 //	}
+	
+	private Order actualOrder() {
+		return actual.getOrder();
+	}
 
 	public OrderAssert is(Status status, Action action) {
 		isNotNull();
-		if (!Objects.equals(actual.getStatus(), status)) {
-			failWithMessage("Expected order's status to be <%s> but was <%s>", status, actual.getStatus());
+		if (!Objects.equals(actualOrder().getStatus(), status)) {
+			failWithMessage("Expected order's status to be <%s> but was <%s>", status, actualOrder().getStatus());
 		}
-		if (!Objects.equals(actual.getAction(), action)) {
-			failWithMessage("Expected order's action to be <%s> but was <%s>", action, actual.getAction());
+		if (!Objects.equals(actualOrder().getAction(), action)) {
+			failWithMessage("Expected order's action to be <%s> but was <%s>", action, actualOrder().getAction());
 		}
 		return this;
 	}
 
 	public OrderAssert versionIs(int version) {
 		isNotNull();
-		if (actual.getVersion() != version) {
-			failWithMessage("Expected order's version to be <%s> but was <%s>", version, actual.getVersion());
+		if (actualOrder().getVersion() != version) {
+			failWithMessage("Expected order's version to be <%s> but was <%s>", version, actualOrder().getVersion());
 		}
 		return this;
 	}
@@ -48,8 +53,8 @@ public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
 	public OrderAssert quantityIs(double quantity) {
 		isNotNull();
 		BigDecimal quantityBd = new BigDecimal(Double.toString(quantity));
-		if (actual.getQuantity().compareTo(quantityBd) != 0) {
-			failWithMessage("Expected order's quantity to be <%s> but was <%s>", quantity, actual.getQuantity());
+		if (actualOrder().getQuantity().compareTo(quantityBd) != 0) {
+			failWithMessage("Expected order's quantity to be <%s> but was <%s>", quantity, actualOrder().getQuantity());
 		}
 		return this;
 	}
@@ -57,8 +62,8 @@ public class OrderAssert extends AbstractAssert<OrderAssert, Order> {
 	public OrderAssert filledQuantityIs(double filledQuantity) {
 		isNotNull();
 		BigDecimal filledQuantityBd = new BigDecimal(Double.toString(filledQuantity));
-		if (actual.getFilledQuantity().compareTo(filledQuantityBd) != 0) {
-			failWithMessage("Expected order's filledQuantity to be <%s> but was <%s>", filledQuantity, actual.getFilledQuantity());
+		if (actualOrder().getFilledQuantity().compareTo(filledQuantityBd) != 0) {
+			failWithMessage("Expected order's filledQuantity to be <%s> but was <%s>", filledQuantity, actualOrder().getFilledQuantity());
 		}
 		return this;
 	}
