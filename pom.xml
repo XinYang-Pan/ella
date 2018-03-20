@@ -79,6 +79,7 @@
 				<configuration>
 					<username>seanpan2008@gmail.com</username>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<pushChanges>false</pushChanges>
 				</configuration>
 			</plugin>
 		</plugins>
