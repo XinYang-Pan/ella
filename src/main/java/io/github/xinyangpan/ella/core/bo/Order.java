@@ -26,6 +26,11 @@ public class Order {
 
 	public Order copy() {
 		Order copy = new Order();
+		this.copyTo(copy);
+		return copy;
+	}
+
+	public void copyTo(Order copy) {
 		copy.id = this.id;
 		copy.quantity = this.quantity;
 		copy.filledQuantity = this.filledQuantity;
@@ -39,7 +44,6 @@ public class Order {
 		copy.version = this.version;
 		copy.maxAmount = this.maxAmount;
 		copy.executions.addAll(this.executions);
-		return copy;
 	}
 	
 	public void fill(Execution execution) {

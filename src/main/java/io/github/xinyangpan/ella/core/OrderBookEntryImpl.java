@@ -49,7 +49,7 @@ class OrderBookEntryImpl extends OrderBookEntry {
 			BigDecimal fillingQty = order.getQuantity().min(inputQuantity);
 			if (fillingQty.signum() > 0) {
 				totalQuantity = totalQuantity.subtract(fillingQty);
-				Execution execution = new Execution(price, fillingQty, scaleConfig.getAmountScale(), order.getId(), input.getId());
+				Execution execution = new Execution(price, fillingQty, scaleConfig.getAmountScale(), order, input);
 				input.fill(execution);
 				order.fill(execution);
 				order.versionPlus();
