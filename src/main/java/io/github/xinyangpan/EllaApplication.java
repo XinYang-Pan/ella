@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EllaApplication {
 
 	public static void main(String[] args) {
-		// test 
 		SpringApplication.run(EllaApplication.class, args);
 	}
 }

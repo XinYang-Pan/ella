@@ -4,7 +4,7 @@
 
 	<groupId>io.github.xinyang-pan</groupId>
 	<artifactId>ella</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>ella</name>
@@ -79,7 +79,6 @@
 				<configuration>
 					<username>seanpan2008@gmail.com</username>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
-					<pushChanges>false</pushChanges>
 				</configuration>
 			</plugin>
 		</plugins>
