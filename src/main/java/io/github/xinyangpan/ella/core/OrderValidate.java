@@ -22,7 +22,6 @@ public class OrderValidate {
 		marketOrLimit(order);
 		Assert.isTrue(order.getOrderTs() == 0, "Order Time should NOT be set.");
 		Assert.isTrue(order.getAction() == Action.PLACING, "Action must be PLACING.");
-		Assert.isTrue(order.getVersion() == 1, "Version has to be 1.");
 		Assert.isTrue(order.getFilledQuantity().compareTo(BigDecimal.ZERO) == 0, "Filled Quantity must be 0.");
 	}
 
@@ -46,7 +45,6 @@ public class OrderValidate {
 		// check version
 		Order order = allOrderIndex.get(input.getId());
 		Assert.notNull(order, "Order is not found.");
-		Assert.isTrue(input.getVersion() - order.getVersion() == 1, "Version Not Match.");
 	}
 
 	public void modify(Order order) {

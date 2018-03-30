@@ -17,7 +17,6 @@ public class Order {
 	private Action action;
 	private OrderType orderType;
 	private long orderTs;
-	private int version = 1;
 	// for Market Order
 	private BigDecimal maxAmount;
 
@@ -38,7 +37,6 @@ public class Order {
 		copy.action = this.action;
 		copy.orderType = this.orderType;
 		copy.orderTs = this.orderTs;
-		copy.version = this.version;
 		copy.maxAmount = this.maxAmount;
 	}
 	
@@ -80,13 +78,9 @@ public class Order {
 		}
 	}
 
-	public void versionPlus() {
-		this.version ++;
-	}
-	
 	@Override
 	public String toString() {
-		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, action=%s, orderType=%s, orderTs=%s, version=%s, maxAmount=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, action, orderType, orderTs, version, maxAmount);
+		return String.format("Order [id=%s, quantity=%s, filledQuantity=%s, totalQuantity=%s, price=%s, side=%s, status=%s, action=%s, orderType=%s, orderTs=%s, maxAmount=%s]", id, quantity, filledQuantity, totalQuantity, price, side, status, action, orderType, orderTs, maxAmount);
 	}
 
 	public long getId() {
@@ -167,14 +161,6 @@ public class Order {
 
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-
-	public int getVersion() {
-		return version;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
 	}
 
 	public Action getAction() {

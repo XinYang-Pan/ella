@@ -56,7 +56,6 @@ class OrderBookEntryImpl extends OrderBookEntry {
 				executions.add(execution);
 				input.fill(execution);
 				order.fill(execution);
-				order.versionPlus();
 				if (order.getQuantity().signum() > 0) {
 					// still have quantity
 					orders.addFirst(order);

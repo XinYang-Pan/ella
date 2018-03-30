@@ -37,7 +37,6 @@ public class OrderBookImpl implements OrderBook {
 	public OrderResult placeOrder(Order order) {
 		orderValidate.place(order);
 		order.setOrderTs(System.currentTimeMillis());
-		order.versionPlus();
 		switch (order.getOrderType()) {
 		case MARKET:
 		case LIMIT:
@@ -160,7 +159,6 @@ public class OrderBookImpl implements OrderBook {
 	@Override
 	public Order cancel(Order order) {
 		orderValidate.cancel(order);
-		order.versionPlus();
 		NavigableMap<BigDecimal, OrderBookEntryImpl> sameSideBook = this.sameSideBook(order.getSide());
 		OrderBookEntryImpl orderBookEntry = sameSideBook.get(order.getPrice());
 		return orderBookEntry.cancelOrder(order);

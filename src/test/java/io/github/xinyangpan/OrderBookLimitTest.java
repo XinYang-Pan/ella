@@ -29,7 +29,7 @@ public class OrderBookLimitTest {
 		OrderResult orderResult = orderBook.placeOrder(limit(Side.SELL, 500, 120.01));
 		System.out.println(orderResult);
 		// Order
-		assertThat(orderResult).is(Status.FILLED, Action.EXECUTED).quantityIs(0).filledQuantityIs(500).versionIs(2)
+		assertThat(orderResult).is(Status.FILLED, Action.EXECUTED).quantityIs(0).filledQuantityIs(500)
 			.executionSizeIs(1)
 			.hasExecution(1, 120.57, 500, 60285);
 		// Order Book
@@ -60,7 +60,7 @@ public class OrderBookLimitTest {
 		OrderResult orderResult = orderBook.placeOrder(limit(Side.SELL, 5000, 120.01));
 		System.out.println(orderResult);
 		// Order
-		assertThat(orderResult).is(Status.LIVE, Action.PLACED).quantityIs(2000).filledQuantityIs(3000).versionIs(2)
+		assertThat(orderResult).is(Status.LIVE, Action.PLACED).quantityIs(2000).filledQuantityIs(3000)
 			.executionSizeIs(3)
 			.hasExecution(1, 120.57, 1000, 120570)
 			.hasExecution(2, 120.56, 1000, 120560)
@@ -91,7 +91,7 @@ public class OrderBookLimitTest {
 		OrderResult orderResult = orderBook.placeOrder(limit(Side.BUY, 500, 130.01));
 		System.out.println(orderResult);
 		// Order
-		assertThat(orderResult).is(Status.FILLED, Action.EXECUTED).quantityIs(0).filledQuantityIs(500).versionIs(2)
+		assertThat(orderResult).is(Status.FILLED, Action.EXECUTED).quantityIs(0).filledQuantityIs(500)
 			.executionSizeIs(1)
 			.hasExecution(1, 120.58, 500, 60290);
 		// Order Book
@@ -122,7 +122,7 @@ public class OrderBookLimitTest {
 		OrderResult orderResult = orderBook.placeOrder(limit(Side.BUY, 5000, 130.01));
 		System.out.println(orderResult);
 		// Order
-		assertThat(orderResult).is(Status.LIVE, Action.PLACED).quantityIs(2000).filledQuantityIs(3000).versionIs(2)
+		assertThat(orderResult).is(Status.LIVE, Action.PLACED).quantityIs(2000).filledQuantityIs(3000)
 			.executionSizeIs(3)
 			.hasExecution(1, 120.58, 1000, 120580)
 			.hasExecution(2, 120.59, 1000, 120590)

@@ -42,14 +42,6 @@ public class OrderAssert extends AbstractAssert<OrderAssert, OrderResult> {
 		return this;
 	}
 
-	public OrderAssert versionIs(int version) {
-		isNotNull();
-		if (actualOrder().getVersion() != version) {
-			failWithMessage("Expected order's version to be <%s> but was <%s>", version, actualOrder().getVersion());
-		}
-		return this;
-	}
-
 	public OrderAssert quantityIs(double quantity) {
 		isNotNull();
 		BigDecimal quantityBd = new BigDecimal(Double.toString(quantity));
