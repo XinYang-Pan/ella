@@ -10,18 +10,19 @@ import io.github.xinyangpan.ella.core.bo.OrderResult;
 import io.github.xinyangpan.ella.core.bo.Side;
 
 public interface OrderBook {
-
+	
+	// 
 	OrderResult placeOrder(Order order);
 
 	Order cancel(Order order);
 	
-	Order modifyOrder(Order order);
+	// after change price could be executed immediately
+	OrderResult modifyOrder(Order order);
 
 	Order getCopy(long orderId);
 
 	List<Order> snapshot();
 
 	NavigableMap<BigDecimal, OrderBookEntry> getSideBook(Side side);
-
 
 }

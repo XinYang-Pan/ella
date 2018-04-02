@@ -47,19 +47,19 @@ public class OrderBookImpl implements OrderBook {
 	}
 	
 	@Override
-	public Order modifyOrder(Order order) {
+	public OrderResult modifyOrder(Order order) {
 		orderValidate.modify(order);
 		order.setAction(Action.CANCELING);
 		order = this.cancel(order);
 		if (order != null && order.getAction() == Action.CANCELED) {
 			order.setStatus(Status.LIVE);
 			order.setAction(Action.PLACING);
-			this.placeOrder(order);
+			OrderResult orderResult = this.placeOrder(order);
 			order.setAction(Action.MODIFIED);
-			return order;
+			return orderResult;
 		}
 		order.setAction(Action.MODIFY_FAILED);
-		return order;
+		return new OrderResult(order);
 	}
 
 	private OrderResult marketAndLimitOrder(Order order) {
