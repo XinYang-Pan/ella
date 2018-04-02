@@ -83,6 +83,7 @@ class OrderBookEntryImpl extends OrderBookEntry {
 		Assert.isTrue(input.getOrderType() == OrderType.LIMIT, "Order must be limit.");
 		Order order = allOrderIndex.remove(input.getId());
 		if (order != null && orders.remove(order)) {
+			totalQuantity = totalQuantity.subtract(order.getQuantity());
 			order.complete(Action.CANCELED);
 			return order;
 		} else {

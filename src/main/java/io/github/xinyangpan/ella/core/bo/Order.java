@@ -7,9 +7,9 @@ import org.springframework.util.Assert;
 
 public class Order {
 	private long id;
-	private BigDecimal quantity;
+	private BigDecimal quantity; // Left Quantity
 	private BigDecimal filledQuantity = BigDecimal.ZERO;
-	private BigDecimal totalQuantity;
+	private BigDecimal totalQuantity; // quantity + filledQuantity = totalQuantity
 	// worst price for Market Order
 	private BigDecimal price;
 	private Side side;
