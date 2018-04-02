@@ -163,7 +163,12 @@ public class OrderBookImpl implements OrderBook {
 		order.versionPlus();
 		NavigableMap<BigDecimal, OrderBookEntryImpl> sameSideBook = this.sameSideBook(order.getSide());
 		OrderBookEntryImpl orderBookEntry = sameSideBook.get(order.getPrice());
-		return orderBookEntry.cancelOrder(order);
+		Order cancelOrder = orderBookEntry.cancelOrder(order);
+		// remove entry if TotalQuantity is Zero
+		if (orderBookEntry.getTotalQuantity().compareTo(BigDecimal.ZERO) == 0) {
+			sameSideBook.remove(orderBookEntry.getPrice());
+		}
+		return cancelOrder;
 	}
 	
 	@Override
