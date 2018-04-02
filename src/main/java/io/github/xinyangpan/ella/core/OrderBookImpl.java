@@ -18,7 +18,6 @@ import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Execution;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderResult;
-import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.ScaleConfig;
 import io.github.xinyangpan.ella.core.bo.Side;
 import io.github.xinyangpan.ella.core.bo.Status;
@@ -87,13 +86,13 @@ public class OrderBookImpl implements OrderBook {
 					return orderResult;
 				}
 			} else {
+				// Opposite side book has entries but price is worse than currency order
 				// Order (Limit) has unfilled quantity.
-				Assert.isTrue(order.getOrderType() == OrderType.LIMIT , "Internal Error: quantity");
-				doPlace(order);
-				return orderResult;
+				break;
 			}
 		}
-		// No Book Entries are left.
+		// No More matches
+		// No Book Entries are left or other entries prices are bad.
 		switch (order.getOrderType()) {
 		case MARKET:
 			order.complete(Action.EXECUTED);

@@ -14,7 +14,7 @@ import io.github.xinyangpan.ella.core.bo.Status;
 public class OrderBookLimitTest {
 
 	@Test
-	public void limitSell500() {
+	public void sell500() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
 		assertThat(orderBook)
@@ -45,7 +45,38 @@ public class OrderBookLimitTest {
 	}
 
 	@Test
-	public void limitSell5000() {
+	public void sell1500() {
+		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
+		// 
+		assertThat(orderBook)
+			.askDepthIs(3)
+			.askVolumeIs(120.61, 1000)
+			.askVolumeIs(120.59, 1000)
+			.askVolumeIs(120.58, 1000)
+			.bidDepthIs(3)
+			.bidVolumeIs(120.57, 1000)
+			.bidVolumeIs(120.56, 1000)
+			.bidVolumeIs(120.55, 1000);
+		OrderResult orderResult = orderBook.placeOrder(limit(Side.SELL, 1500, 120.57));
+		System.out.println(orderResult);
+		// Order
+		assertThat(orderResult).is(Status.LIVE, Action.PLACED).quantityIs(500).filledQuantityIs(1000)
+			.executionSizeIs(1)
+			.hasExecution(1, 120.57, 1000, 120570);
+		// Order Book
+		assertThat(orderBook)
+			.askDepthIs(4)
+			.askVolumeIs(120.61, 1000)
+			.askVolumeIs(120.59, 1000)
+			.askVolumeIs(120.58, 1000)
+			.askVolumeIs(120.57, 500)
+			.bidDepthIs(2)
+			.bidVolumeIs(120.56, 1000)
+			.bidVolumeIs(120.55, 1000);
+	}
+
+	@Test
+	public void sell5000() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
 		assertThat(orderBook)
@@ -76,7 +107,7 @@ public class OrderBookLimitTest {
 	}
 
 	@Test
-	public void limitBuy500() {
+	public void buy500() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
 		assertThat(orderBook)
@@ -107,7 +138,38 @@ public class OrderBookLimitTest {
 	}
 
 	@Test
-	public void limitBuy5000() {
+	public void buy2500() {
+		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
+		// 
+		assertThat(orderBook)
+			.askDepthIs(3)
+			.askVolumeIs(120.61, 1000)
+			.askVolumeIs(120.59, 1000)
+			.askVolumeIs(120.58, 1000)
+			.bidDepthIs(3)
+			.bidVolumeIs(120.57, 1000)
+			.bidVolumeIs(120.56, 1000)
+			.bidVolumeIs(120.55, 1000);
+		OrderResult orderResult = orderBook.placeOrder(limit(Side.BUY, 2500, 120.60));
+		System.out.println(orderResult);
+		// Order
+		assertThat(orderResult).is(Status.LIVE, Action.PLACED).quantityIs(500).filledQuantityIs(2000)
+			.executionSizeIs(2)
+			.hasExecution(1, 120.58, 1000, 120580)
+			.hasExecution(2, 120.59, 1000, 120590);
+		// Order Book
+		assertThat(orderBook)
+			.askDepthIs(1)
+			.askVolumeIs(120.61, 1000)
+			.bidDepthIs(4)
+			.bidVolumeIs(120.60, 500)
+			.bidVolumeIs(120.57, 1000)
+			.bidVolumeIs(120.56, 1000)
+			.bidVolumeIs(120.55, 1000);
+	}
+
+	@Test
+	public void buy5000() {
 		OrderBookImpl orderBook = NoneMatchBook.bookSample1();
 		// 
 		assertThat(orderBook)

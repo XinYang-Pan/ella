@@ -25,6 +25,19 @@ public class OrderUtils {
 		return order;
 	}
 
+	public static Order market(Side side, long quantity, double price) {
+		Order order = new Order();
+		order.setId(id.getAndIncrement());
+		order.setOrderType(OrderType.MARKET);
+		order.setQuantity(new BigDecimal(String.valueOf(quantity)));
+		order.setTotalQuantity(new BigDecimal(String.valueOf(quantity)));
+		order.setPrice(new BigDecimal(String.valueOf(price)));
+		order.setSide(side);
+		order.setStatus(Status.LIVE);
+		order.setAction(Action.PLACING);
+		return order;
+	}
+
 	public static Order market(Side side, long quantity) {
 		Order order = new Order();
 		order.setId(id.getAndIncrement());
