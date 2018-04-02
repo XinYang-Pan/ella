@@ -63,8 +63,7 @@ public class OrderBookImpl implements OrderBook {
 	}
 
 	private OrderResult marketAndLimitOrder(Order order) {
-		OrderResult orderResult = new OrderResult();
-		orderResult.setOrder(order);
+		OrderResult orderResult = new OrderResult(order);
 		NavigableMap<BigDecimal, OrderBookEntryImpl> oppositeSideMap = this.otherSideBook(order.getSide());
 		// 
 		Entry<BigDecimal, OrderBookEntryImpl> firstEntry = null;

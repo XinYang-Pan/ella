@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderResult {
-	private Order order;
+	private final Order order;
 	private final List<Execution> executions = new ArrayList<>();
+	
+	public OrderResult(Order order) {
+		super();
+		this.order = order;
+	}
 
 	@Override
 	public String toString() {
@@ -14,10 +19,6 @@ public class OrderResult {
 
 	public Order getOrder() {
 		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 
 	public List<Execution> getExecutions() {
