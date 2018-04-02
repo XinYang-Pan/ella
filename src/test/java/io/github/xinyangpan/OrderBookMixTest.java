@@ -65,7 +65,6 @@ public class OrderBookMixTest {
 		System.out.println(orderBook.toOrderBoardStr());
 		System.out.println(orderBook.snapshot());
 		Order order = orderResult.getOrder().copy();
-		order.versionPlus();
 		order.setAction(Action.CANCELING);
 		System.out.println(orderBook.cancel(order));
 		System.out.println(orderBook.snapshot());
