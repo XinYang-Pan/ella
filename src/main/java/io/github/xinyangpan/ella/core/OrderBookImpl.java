@@ -56,9 +56,10 @@ public class OrderBookImpl implements OrderBook {
 			OrderResult orderResult = this.placeOrder(order);
 			order.setAction(Action.MODIFIED);
 			return orderResult;
+		} else {
+			order.setAction(Action.MODIFY_FAILED);
+			return new OrderResult(order);
 		}
-		order.setAction(Action.MODIFY_FAILED);
-		return new OrderResult(order);
 	}
 
 	private OrderResult marketAndLimitOrder(Order order) {
