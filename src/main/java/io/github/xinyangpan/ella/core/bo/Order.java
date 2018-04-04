@@ -14,6 +14,7 @@ public class Order {
 	private BigDecimal price;
 	private Side side;
 	private Status status;
+	// maybe boolean is enough to indicate is successful
 	private Action action;
 	private OrderType orderType;
 	private long orderTs;
