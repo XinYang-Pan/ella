@@ -60,10 +60,7 @@ class OrderBookEntryImpl extends OrderBookEntry {
 				executionResult.addExecution(execution);
 				input.fill(execution);
 				order.fill(execution);
-				if (order.getQuantity().signum() > 0) {
-					// still have quantity
-//					orders.addFirst(order);
-				} else {
+				if (order.getQuantity().signum() <= 0) {
 					// no more quantity, remove from all order
 					allOrderIndex.remove(order.getId());
 					orders.remove(order);
