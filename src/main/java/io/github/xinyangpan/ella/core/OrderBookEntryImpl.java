@@ -1,7 +1,6 @@
 package io.github.xinyangpan.ella.core;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -9,10 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 
 import io.github.xinyangpan.ella.core.bo.Action;
 import io.github.xinyangpan.ella.core.bo.Execution;
+import io.github.xinyangpan.ella.core.bo.ExecutionResult;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderType;
 import io.github.xinyangpan.ella.core.bo.ScaleConfig;
@@ -43,25 +42,31 @@ class OrderBookEntryImpl extends OrderBookEntry {
 		order.setAction(Action.PLACED);
 	}
 
-	public List<Execution> take(Order input) {
+	public ExecutionResult take(Order input) {
 		LOGGER.info("Take Order: {}", input);
 		Order order = null;
-		List<Execution> executions = Lists.newArrayList();
-		while ((order = orders.pollFirst()) != null) {
+		ExecutionResult executionResult = new ExecutionResult();
+		while ((order = orders.peekFirst()) != null) {
+			if (order.isExpired()) {
+				Order cancelOrder = this.cancelOrder(order);
+				executionResult.addCanceledOrder(cancelOrder);
+				continue;
+			}
 			BigDecimal inputQuantity = input.getFillableQuantity(price, scaleConfig.getQuantityScale());
 			BigDecimal fillingQty = order.getQuantity().min(inputQuantity);
 			if (fillingQty.signum() > 0) {
 				totalQuantity = totalQuantity.subtract(fillingQty);
 				Execution execution = new Execution(price, fillingQty, scaleConfig.getAmountScale(), order, input);
-				executions.add(execution);
+				executionResult.addExecution(execution);
 				input.fill(execution);
 				order.fill(execution);
 				if (order.getQuantity().signum() > 0) {
 					// still have quantity
-					orders.addFirst(order);
+//					orders.addFirst(order);
 				} else {
 					// no more quantity, remove from all order
 					allOrderIndex.remove(order.getId());
+					orders.remove(order);
 					Assert.isTrue(order.getFilledQuantity().compareTo(order.getTotalQuantity()) == 0, "Maker Order should be full filled.");
 					order.complete(Action.EXECUTED);
 				}
@@ -73,7 +78,7 @@ class OrderBookEntryImpl extends OrderBookEntry {
 			}
 		}
 		LOGGER.info("Take Order Result: {}", input);
-		return executions;
+		return executionResult;
 	}
 
 	public Order cancelOrder(Order input) {

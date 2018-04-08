@@ -18,6 +18,10 @@ public class Order {
 	private Action action;
 	private OrderType orderType;
 	private long orderTs;
+	// used for limit order
+	// 0 never expire
+	// when has value, the expire time stamp
+	private long expireTs;
 	// for Market Order
 	private BigDecimal maxAmount;
 
@@ -39,6 +43,16 @@ public class Order {
 		copy.orderType = this.orderType;
 		copy.orderTs = this.orderTs;
 		copy.maxAmount = this.maxAmount;
+	}
+
+	public boolean isExpired() {
+		if (expireTs == 0) {
+			return false;
+		} else if (expireTs > System.currentTimeMillis()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	public void fill(Execution execution) {
@@ -170,6 +184,14 @@ public class Order {
 
 	public void setAction(Action action) {
 		this.action = action;
+	}
+
+	public long getExpireTs() {
+		return expireTs;
+	}
+
+	public void setExpireTs(long expireTs) {
+		this.expireTs = expireTs;
 	}
 
 }

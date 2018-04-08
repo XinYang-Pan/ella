@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
 
 import io.github.xinyangpan.ella.OrderBook;
 import io.github.xinyangpan.ella.core.bo.Action;
-import io.github.xinyangpan.ella.core.bo.Execution;
+import io.github.xinyangpan.ella.core.bo.ExecutionResult;
 import io.github.xinyangpan.ella.core.bo.Order;
 import io.github.xinyangpan.ella.core.bo.OrderResult;
 import io.github.xinyangpan.ella.core.bo.ScaleConfig;
@@ -70,8 +70,10 @@ public class OrderBookImpl implements OrderBook {
 		while ((firstEntry = oppositeSideMap.firstEntry()) != null) {
 			if (this.isEntryPriceBetterOrSameThanOrderPrice(order, firstEntry)) {
 				OrderBookEntryImpl orderBookEntry = firstEntry.getValue();
-				List<Execution> executions = orderBookEntry.take(order);
-				orderResult.getExecutions().addAll(executions);
+				ExecutionResult executionResult = orderBookEntry.take(order);
+//				List<Execution> executions = orderBookEntry.take(order);
+				orderResult.getCancelledOrders().addAll(executionResult.getCancelledOrders());
+				orderResult.getExecutions().addAll(executionResult.getExecutions());
 				// 
 				BigDecimal totalQuantity = orderBookEntry.getTotalQuantity();
 				Assert.isTrue(totalQuantity.signum() >= 0 , "Internal Error: totalQuantity");
